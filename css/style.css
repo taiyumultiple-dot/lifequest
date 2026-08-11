@@ -395,6 +395,94 @@
 .entry__a { font-size: 14px; color: var(--ink-soft); margin: 0; white-space: pre-wrap; line-height: 1.85; }
 
 /* ==========================================================================
+   課本單元
+   ========================================================================== */
+
+.lessons { display: flex; flex-direction: column; gap: 10px; }
+
+.lcell {
+  text-align: left; width: 100%;
+  padding: 15px 16px; border-radius: var(--r-md);
+  border: 1px solid var(--line); background: var(--glass);
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.lcell:hover { border-color: var(--line-gold); transform: translateY(-1px); }
+.lcell--done { border-color: rgba(111, 214, 176, .4); }
+
+.lcell__top { display: flex; align-items: flex-start; gap: 11px; }
+.lcell__g {
+  width: 40px; height: 40px; flex: none; border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+  background: rgba(233, 200, 119, .10); border: 1px solid var(--line-gold);
+}
+.lcell__head { flex: 1; min-width: 0; }
+.lcell__no { font-size: 11.5px; letter-spacing: .1em; color: var(--gold); }
+.lcell__name { font-size: 16px; font-weight: 700; color: var(--ink); margin-top: 2px; line-height: 1.45; }
+.lcell__mark { flex: none; font-size: 19px; color: var(--gold); padding: 2px 4px; line-height: 1; }
+.lcell__desc { font-size: 12.5px; color: var(--ink-soft); margin: 10px 0 0; line-height: 1.75; }
+.lcell__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.lcell__bar { display: flex; align-items: center; gap: 9px; margin-top: 11px; }
+.lcell__bar .bar { flex: 1; }
+.lcell__bar b { font-size: 12px; color: var(--ink-soft); flex: none; min-width: 34px; text-align: right; }
+
+/* --- 段落 ------------------------------------------------------------ */
+
+.lsecs { display: flex; flex-direction: column; gap: 9px; }
+.lsec { border-radius: var(--r-md); border: 1px solid var(--line); background: var(--glass); overflow: hidden; }
+.lsec--open { border-color: var(--line-gold); }
+
+.lsec__head { display: flex; align-items: center; gap: 11px; width: 100%; text-align: left; padding: 13px 15px; }
+.lsec__n {
+  width: 26px; height: 26px; flex: none; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12.5px; font-weight: 700;
+  color: var(--ink-soft); border: 1px solid var(--line);
+}
+.lsec__n--done { color: var(--bg-0); background: var(--jade); border-color: var(--jade); }
+.lsec__t { flex: 1; min-width: 0; }
+.lsec__t b { font-size: 14.5px; display: block; line-height: 1.5; }
+.lsec__t small { font-size: 11.5px; color: var(--ink-faint); }
+.lsec__chev { flex: none; color: var(--gold); font-size: 13px; }
+
+.lsec__body { padding: 2px 15px 15px; animation: rise var(--dur) var(--ease); }
+.lsec__slide { font-size: 15px; color: var(--ink); line-height: 2; margin: 0 0 12px; }
+
+/* 備課提示：投影中不能讓學生看到，所以預設收起來 */
+.lsec__notes { margin: 14px 0; }
+.lsec__notes-t {
+  font-size: 12px; color: var(--ice); padding: 7px 11px; border-radius: var(--r-sm);
+  border: 1px dashed var(--line); background: rgba(143, 212, 245, .06); width: 100%; text-align: left;
+}
+.lsec__notes-b { margin-top: 9px; padding: 12px 14px; border-radius: var(--r-sm);
+  border: 1px solid var(--line); background: rgba(7, 11, 20, .5); }
+.lsec__notes-b ul { margin: 0; padding-left: 18px; }
+.lsec__notes-b li { font-size: 13px; color: var(--ink-soft); line-height: 1.85; margin-bottom: 7px; }
+.lsec__notes-b li:last-child { margin-bottom: 0; }
+
+/* --- 段落裡的互動題 --------------------------------------------------- */
+
+.lcp {
+  margin-top: 14px; padding: 15px 16px; border-radius: var(--r-sm);
+  border: 1px solid var(--line-gold); background: rgba(233, 200, 119, .07);
+}
+.lcp__eyebrow { font-size: 11.5px; letter-spacing: .1em; color: var(--gold); margin-bottom: 7px; }
+.lcp__q { font-size: 15px; color: var(--ink); line-height: 1.85; margin: 0 0 13px; }
+.lcp__hint { font-size: 12px; color: var(--ink-faint); margin: 10px 0 0; line-height: 1.7; }
+
+.lscale-row { display: flex; gap: 8px; }
+.lscale {
+  flex: 1; padding: 13px 0; border-radius: var(--r-sm);
+  border: 1px solid var(--line); background: rgba(255, 255, 255, .05);
+  font-size: 16px; font-weight: 700; color: var(--ink-soft);
+  transition: all var(--dur) var(--ease);
+}
+.lscale:hover { border-color: var(--line-gold); }
+.lscale--on { color: var(--bg-0); background: var(--gold); border-color: var(--gold); }
+.lscale-lab { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ink-faint); margin-top: 7px; }
+
+.choice--on { border-color: var(--gold); background: rgba(233, 200, 119, .14); }
+
+/* ==========================================================================
    心象探索（塔羅・測驗・星座・價值羅盤）
    ========================================================================== */
 

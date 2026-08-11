@@ -47,6 +47,13 @@
       // --- 成長紀錄（反思答案）---
       journal: [],
 
+      // --- 課本單元 ---
+      lessons: {
+        answers: {},   // { "l01/q1": { v, at } } 量表與單選的作答
+        done: {},      // { l01: { s1: 時間戳 } } 讀完的段落
+        marks: []      // 加了書籤的單元 id
+      },
+
       // --- 心象探索（塔羅／測驗／星座／價值羅盤）---
       oracle: {
         seed: String(Date.now()) + "-" + Math.floor(Math.random() * 100000), // 每個人的抽牌基準，避免全班同一張
@@ -84,6 +91,12 @@
     Object.keys(base.oracle).forEach(function (k) {
       if (save.oracle[k] === undefined || save.oracle[k] === null) save.oracle[k] = base.oracle[k];
     });
+    // 課本單元同理
+    if (typeof save.lessons !== "object") save.lessons = base.lessons;
+    Object.keys(base.lessons).forEach(function (k) {
+      if (save.lessons[k] === undefined || save.lessons[k] === null) save.lessons[k] = base.lessons[k];
+    });
+    if (!Array.isArray(save.lessons.marks)) save.lessons.marks = [];
     save.v = VERSION;
     return save;
   }

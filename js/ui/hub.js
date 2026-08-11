@@ -81,6 +81,9 @@
           '<button type="button" class="row" data-go="codex"><i>◈</i>' +
             "<div><b>迷障圖鑑</b><p>你破解過的思考陷阱，都收在這裡。</p></div>" +
             '<span class="row__val">' + Object.keys(LQ.state.d.illusions).length + " / " + LQ.data.illusions.length + "</span></button>" +
+          '<button type="button" class="row" data-go="lessons"><i>▤</i>' +
+            "<div><b>課本單元</b><p>六個單元對應五大素養，每個單元都連著一扇門。</p></div>" +
+            '<span class="row__val">' + LQ.lessons.overall() + "%</span></button>" +
           '<button type="button" class="row" data-go="oracle"><i>✦</i>' +
             "<div><b>心象探索</b><p>心象牌、自我探索測驗、星座提問、價值羅盤。不預測未來，只給你一個角度。</p></div>" +
             '<span class="row__val">四樣</span></button>' +

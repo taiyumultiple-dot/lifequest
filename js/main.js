@@ -15,6 +15,8 @@
     shop:      function () { LQ.ui.shop.render(); },
     journal:   function () { LQ.ui.journal.render(); },
     settings:  function () { LQ.ui.settings.render(); },
+    // 課本單元
+    lessons:   function () { LQ.ui.lessons.render(); },
     // 心象探索
     oracle:    function () { LQ.ui.oracle.render(); },
     tarot:     function () { LQ.ui.tarot.render(); },
@@ -26,7 +28,7 @@
   // 底部導覽七顆；沒有自己那一顆的畫面，歸在最接近的那一顆底下
   var NAV_OF = { hub: "hub", daily: "daily", codex: "hub", journal: "hub",
                  character: "character", shop: "shop", settings: "settings",
-                 tarot: "tarot", zodiac: "zodiac",
+                 tarot: "tarot", zodiac: "zodiac", lessons: "lessons",
                  oracle: "hub", psych: "hub", values: "hub" };
 
   /** 把 HTML 放進主畫面容器 */
@@ -97,6 +99,7 @@
 
     LQ.state.load();
     applyContentPack();
+    LQ.lessons.applyPack();     // 使用者匯入過課本單元的話，用他的取代內建六單元
     LQ.daily.sync();
 
     LQ.ui.modal.init();

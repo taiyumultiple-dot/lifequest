@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    Service Worker：讓遊戲可以安裝、離線也能玩。
 
    快取策略（很重要，別改成全部 cache-first）：
@@ -8,7 +8,7 @@
 
    改版時把 CACHE 的版本號 +1，舊快取會自動被清掉。
    ========================================================================== */
-var CACHE = "lifequest-v7";
+var CACHE = "lifequest-v8";
 
 /* 安裝時先抓起來的核心檔案（少一兩支也不會讓安裝失敗）*/
 var CORE = [
@@ -29,6 +29,7 @@ var CORE = [
   "./js/data/psychtests.js",
   "./js/data/zodiac.js",
   "./js/data/values.js",
+  "./js/data/lessons.js",
   "./js/config.js",
   "./js/state.js",
   "./js/cloud.js",
@@ -42,6 +43,7 @@ var CORE = [
   "./js/game/levelflow.js",
   "./js/game/hunt.js",
   "./js/game/oracle.js",
+  "./js/game/lessons.js",
   "./js/ui/modal.js",
   "./js/ui/help.js",
   "./js/ui/login.js",
@@ -58,6 +60,7 @@ var CORE = [
   "./js/ui/psych.js",
   "./js/ui/zodiac.js",
   "./js/ui/values.js",
+  "./js/ui/lessons.js",
   "./js/ui/settings.js",
   "./js/main.js",
   "./js/pwa.js"

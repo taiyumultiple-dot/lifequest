@@ -105,7 +105,7 @@ button:disabled { cursor: not-allowed; }
 /* --- 底部導覽 -------------------------------------------------------- */
 .nav {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
-  display: grid; grid-template-columns: repeat(7, 1fr);
+  display: grid; grid-template-columns: repeat(8, 1fr);
   align-items: end;
   height: calc(var(--nav-h) + var(--safe-b));
   padding-bottom: var(--safe-b);
@@ -122,11 +122,11 @@ button:disabled { cursor: not-allowed; }
 .nav button i { font-style: normal; font-size: 19px; line-height: 1; }
 .nav button span { font-size: 10.5px; letter-spacing: .06em; white-space: nowrap; }
 
-/* 七顆鈕在窄螢幕會擠，字縮一點、間距收掉 */
-@media (max-width: 389px) {
-  .nav button span { font-size: 9.5px; letter-spacing: 0; }
-  .nav button i { font-size: 17px; }
-  .nav__main i { font-size: 20px; }
+/* 八顆鈕在窄螢幕會擠，字縮一點、間距收掉 */
+@media (max-width: 429px) {
+  .nav button span { font-size: 9px; letter-spacing: 0; }
+  .nav button i { font-size: 16px; }
+  .nav__main i { font-size: 19px; }
 }
 .nav button[aria-current="true"] { color: var(--gold); }
 .nav button[aria-current="true"] i { text-shadow: 0 0 14px var(--gold-glow); }
