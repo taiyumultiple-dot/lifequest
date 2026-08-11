@@ -1,0 +1,72 @@
+/* ==========================================================================
+   設計變數：顏色、字級、間距
+   色調取自故事本身——「冷色調的微弱幽藍與銀白光影」「五扇大門流動著脈動光暈」。
+   要改整站配色，改這一個檔案就好。
+   ========================================================================== */
+
+:root {
+  /* --- 底色（由深到淺）--- */
+  --bg-0:        #070B14;   /* 最深，頁面底 */
+  --bg-1:        #0B1220;   /* 面板底 */
+  --bg-2:        #121B2E;   /* 卡片底 */
+  --bg-3:        #1B2740;   /* 浮起的卡片 */
+
+  /* --- 主色：迷宮的幽藍銀白 --- */
+  --ice:         #8FD4F5;   /* 冰藍高光 */
+  --ice-dim:     #4E86B8;
+  --ice-glow:    rgba(143, 212, 245, .28);
+
+  /* --- 強調色：大門的金 --- */
+  --gold:        #E9C877;
+  --gold-deep:   #C9A24B;
+  --gold-glow:   rgba(233, 200, 119, .30);
+
+  /* --- 危險／迷障：教主的紅 --- */
+  --ember:       #E0574F;
+  --ember-deep:  #93231F;
+  --ember-glow:  rgba(224, 87, 79, .26);
+
+  /* --- 成功：領悟的青 --- */
+  --jade:        #6FD6B0;
+
+  /* --- 文字 --- */
+  --ink:         #EAF2FF;   /* 主要文字 */
+  --ink-soft:    #A9BAD4;   /* 次要文字 */
+  --ink-faint:   #6E80A0;   /* 說明、註腳 */
+
+  /* --- 玻璃卡片 --- */
+  --glass:       rgba(18, 27, 46, .72);
+  --glass-hi:    rgba(255, 255, 255, .07);
+  --line:        rgba(143, 212, 245, .18);
+  --line-gold:   rgba(233, 200, 119, .34);
+
+  /* --- 字型 --- */
+  --font-title: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --font-body:  "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+
+  /* --- 圓角與陰影 --- */
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --shadow: 0 18px 46px rgba(0, 0, 0, .55);
+  --shadow-sm: 0 6px 18px rgba(0, 0, 0, .38);
+
+  /* --- 動畫：柔和，不誇張 --- */
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --dur: 320ms;
+
+  /* --- 版面 --- */
+  --wrap: 560px;            /* 手機直式優先，桌機也維持這個閱讀寬度 */
+  --topbar-h: 60px;
+  --nav-h: 66px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+/* 使用者若在系統開了「減少動態效果」，就把動畫關掉 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

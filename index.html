@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B1220">
+<title>五門・心靈迷宮｜生命教育推理遊戲</title>
+<meta name="description" content="穿過心靈迷宮的五扇門，把散落的思考碎片排成鑰匙。生命教育互動推理遊戲。">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/pwa/icon-192.png">
+<link rel="apple-touch-icon" href="assets/pwa/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap">
+<link rel="stylesheet" href="css/tokens.css?v=16">
+<link rel="stylesheet" href="css/components.css?v=16">
+<link rel="stylesheet" href="css/style.css?v=16">
+</head>
+<body>
+
+<!-- 開場載入畫面 -->
+<div id="boot" class="boot">
+  <div class="boot__mark">LIFE EDUCATION QUEST</div>
+  <h1 class="boot__title">五門・心靈迷宮</h1>
+  <div class="boot__bar"><i></i></div>
+  <p class="boot__hint">正在點亮迷宮的燈……</p>
+</div>
+
+<!-- 頂部資源列 -->
+<header id="topbar" class="topbar" hidden>
+  <button class="topbar__id" id="btn-profile" type="button">
+    <img class="topbar__face" id="topbar-face" src="assets/characters/kehua-avatar.webp" alt="目前角色">
+    <span>
+      <b id="topbar-title">初次踏入者</b>
+      <small id="topbar-name">陳可華</small>
+    </span>
+  </button>
+  <div class="topbar__res">
+    <span class="res res--mind" title="心力：開啟一扇門需要心力">
+      <i class="res__ico">◈</i><b id="res-stamina">100</b><small>/<span id="res-stamina-max">100</span></small>
+    </span>
+    <span class="res res--frag" title="記憶碎片：迷宮裡的通用資源">
+      <i class="res__ico">✦</i><b id="res-frag">0</b>
+    </span>
+  </div>
+</header>
+
+<!-- 主畫面容器，內容由各 ui/*.js 渲染 -->
+<main id="screen" class="screen" hidden></main>
+
+<!-- 底部導覽 -->
+<nav id="nav" class="nav" hidden>
+  <button type="button" data-go="shop"><i>❖</i><span>補給站</span></button>
+  <button type="button" data-go="character"><i>☾</i><span>人物</span></button>
+  <button type="button" data-go="hub" class="nav__main"><i>⌘</i><span>五扇門</span></button>
+  <button type="button" data-go="tarot"><i>✦</i><span>塔羅</span></button>
+  <button type="button" data-go="zodiac"><i>✩</i><span>星座</span></button>
+  <button type="button" data-go="daily"><i>◷</i><span>每日</span></button>
+  <button type="button" data-go="settings"><i>⚙</i><span>設定</span></button>
+</nav>
+
+<!-- 全螢幕：登入畫面（開場先出現） -->
+<div id="login" class="login" hidden></div>
+
+<!-- 全螢幕：劇情播放 -->
+<div id="story" class="story" hidden></div>
+
+<!-- 全螢幕：鑄鑰玩法 -->
+<div id="forge" class="forge" hidden></div>
+
+<!-- 彈窗與提示 -->
+<div id="modal" class="modal" hidden></div>
+<div id="toast" class="toast" aria-live="polite"></div>
+
+<script src="js/config.js?v=16"></script>
+<script src="js/data/characters.js?v=16"></script>
+<script src="js/data/illusions.js?v=16"></script>
+<script src="js/data/titles.js?v=16"></script>
+<script src="js/data/shop-items.js?v=16"></script>
+<script src="js/data/daily-sets.js?v=16"></script>
+<script src="js/data/units.js?v=16"></script>
+<script src="js/data/tarot.js?v=16"></script>
+<script src="js/data/psychtests.js?v=16"></script>
+<script src="js/data/zodiac.js?v=16"></script>
+<script src="js/data/values.js?v=16"></script>
+<script src="js/state.js?v=16"></script>
+<script src="js/cloud.js?v=16"></script>
+<script src="js/audio.js?v=16"></script>
+<script src="js/bgm.js?v=16"></script>
+<script src="js/game/keyforge.js?v=16"></script>
+<script src="js/game/economy.js?v=16"></script>
+<script src="js/game/daily.js?v=16"></script>
+<script src="js/game/illusions.js?v=16"></script>
+<script src="js/game/titles.js?v=16"></script>
+<script src="js/game/oracle.js?v=16"></script>
+<script src="js/ui/modal.js?v=16"></script>
+<script src="js/ui/help.js?v=16"></script>
+<script src="js/ui/login.js?v=16"></script>
+<script src="js/ui/story.js?v=16"></script>
+<script src="js/ui/forge.js?v=16"></script>
+<script src="js/game/levelflow.js?v=16"></script>
+<script src="js/game/hunt.js?v=16"></script>
+<script src="js/ui/hub.js?v=16"></script>
+<script src="js/ui/daily.js?v=16"></script>
+<script src="js/ui/codex.js?v=16"></script>
+<script src="js/ui/character.js?v=16"></script>
+<script src="js/ui/shop.js?v=16"></script>
+<script src="js/ui/journal.js?v=16"></script>
+<!-- 心象探索：oracle.js 要排在其他四支前面，它們用它的共用零件 -->
+<script src="js/ui/oracle.js?v=16"></script>
+<script src="js/ui/tarot.js?v=16"></script>
+<script src="js/ui/psych.js?v=16"></script>
+<script src="js/ui/zodiac.js?v=16"></script>
+<script src="js/ui/values.js?v=16"></script>
+<script src="js/ui/settings.js?v=16"></script>
+<script src="js/main.js?v=16"></script>
+<script src="js/pwa.js?v=16"></script>
+</body>
+</html>

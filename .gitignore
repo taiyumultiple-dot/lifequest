@@ -1,0 +1,19 @@
+# 這個 repo 只放遊戲本身，任何金鑰都不該進來。
+# js/config.js 裡的 Supabase publishable key 是設計成公開的（保護來自資料庫 RLS），
+# 但真正的 service_role key、密碼、token 一律不能出現在這裡。
+.env
+.env.*
+*.key
+*.pem
+secrets.*
+
+# 系統與編輯器
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# 記錄檔
+*.log
+npm-debug.log*

@@ -1,0 +1,264 @@
+{
+  "_說明": "遊戲要用到的場景圖清單。src 是下面 sources 的代號，file 是該資料夾底下的相對路徑。改完跑 python tools/build_assets.py 就會重新轉檔。",
+  "output": "assets/scenes",
+  "maxWidth": 1100,
+  "quality": 80,
+  "sources": {
+    "u01": "0811-生命教育影片素材01",
+    "p00": "0717生命教育/0717生命教育 章首動畫影片/動畫分鏡/00章首素材"
+  },
+  "images": [
+    {
+      "id": "gate-hall",
+      "src": "u01",
+      "file": "01/ChatGPT Image 2026年8月10日 上午11_48_14 (1).png",
+      "note": "五扇門大遠景（首頁 hub 背景）"
+    },
+    {
+      "id": "gate-walk",
+      "src": "u01",
+      "file": "01/ChatGPT Image 2026年8月10日 上午11_48_15 (2).png",
+      "note": "兩人走向大門"
+    },
+    {
+      "id": "gate-duo",
+      "src": "u01",
+      "file": "01/ChatGPT Image 2026年8月10日 上午11_48_16 (3).png",
+      "note": "可華與小文特寫"
+    },
+    {
+      "id": "gate-rest",
+      "src": "u01",
+      "file": "19/ChatGPT Image 2026年8月10日 上午11_49_19 (4).png",
+      "note": "兩人坐下休息（結尾）"
+    },
+    {
+      "id": "p00-wake",
+      "src": "p00",
+      "file": "00-1/1.png",
+      "note": "序章：媽媽叫起床"
+    },
+    {
+      "id": "p00-bed",
+      "src": "p00",
+      "file": "00-1/2.png",
+      "note": "序章：賴床"
+    },
+    {
+      "id": "p00-breakfast",
+      "src": "p00",
+      "file": "00-1/5.png",
+      "note": "序章：早餐"
+    },
+    {
+      "id": "p00-car",
+      "src": "p00",
+      "file": "00-1/7.png",
+      "note": "序章：上車出門"
+    },
+    {
+      "id": "p00-ride",
+      "src": "p00",
+      "file": "00-2/2.png",
+      "note": "序章：父子在車上"
+    },
+    {
+      "id": "p00-dusk",
+      "src": "p00",
+      "file": "00-2/1.png",
+      "note": "序章：黃昏車窗發呆"
+    },
+    {
+      "id": "p00-bridge",
+      "src": "p00",
+      "file": "00-2/4.png",
+      "note": "序章：大橋・強光前一刻"
+    },
+    {
+      "id": "p00-eyes",
+      "src": "p00",
+      "file": "00-2/6.png",
+      "note": "序章：睜眼・記憶浮現"
+    },
+    {
+      "id": "p00-office",
+      "src": "p00",
+      "file": "00-2/7.png",
+      "note": "序章：中年上班族被責備"
+    },
+    {
+      "id": "p00-sofa",
+      "src": "p00",
+      "file": "00-2/8.png",
+      "note": "序章：癱在沙發的中年可華"
+    },
+    {
+      "id": "p00-alone",
+      "src": "p00",
+      "file": "00-2/9.png",
+      "note": "序章：黑暗中抱頭獨坐"
+    },
+    {
+      "id": "u01-doorway",
+      "src": "u01",
+      "file": "02/ChatGPT Image 2026年8月10日 上午11_48_50 (2).png",
+      "note": "深淵之門・紅光異變"
+    },
+    {
+      "id": "u01-seized",
+      "src": "u01",
+      "file": "02/ChatGPT Image 2026年8月10日 上午11_48_51 (3).png",
+      "note": "無數雙手把可華拖入"
+    },
+    {
+      "id": "u01-memory",
+      "src": "u01",
+      "file": "02/ChatGPT Image 2026年8月10日 上午11_48_52 (7).png",
+      "note": "教室記憶模糊閃現"
+    },
+    {
+      "id": "u01-school",
+      "src": "u01",
+      "file": "04/ChatGPT Image 2026年8月10日 下午02_01_41 (1).png",
+      "note": "校門・品嘗思考的樂趣"
+    },
+    {
+      "id": "u01-classroom",
+      "src": "u01",
+      "file": "04/ChatGPT Image 2026年8月10日 下午02_01_42 (2).png",
+      "note": "博鈞找可華打球"
+    },
+    {
+      "id": "u01-worry",
+      "src": "u01",
+      "file": "04/ChatGPT Image 2026年8月10日 下午02_01_42 (3).png",
+      "note": "可華煩惱特寫"
+    },
+    {
+      "id": "u01-xiaoping",
+      "src": "u01",
+      "file": "05/ChatGPT Image 2026年8月10日 下午03_22_04 (2).png",
+      "note": "曉萍出面制止博鈞"
+    },
+    {
+      "id": "u01-dawen",
+      "src": "u01",
+      "file": "05/ChatGPT Image 2026年8月10日 下午03_22_52.png",
+      "note": "博鈞想像中的王大文（粉紅）"
+    },
+    {
+      "id": "u01-argue",
+      "src": "u01",
+      "file": "06/ChatGPT Image 2026年8月10日 下午03_26_48 (3).png",
+      "note": "曉萍與博鈞互相指責"
+    },
+    {
+      "id": "u01-reflect",
+      "src": "u01",
+      "file": "07/ChatGPT Image 2026年8月10日 下午03_35_27 (2).png",
+      "note": "曉萍的反思：是我想太多了嗎"
+    },
+    {
+      "id": "u01-slogan",
+      "src": "u01",
+      "file": "08/ChatGPT Image 2026年8月7日 下午04_17_40 (1).png",
+      "note": "大字卡：那只要放棄思考就好啦！"
+    },
+    {
+      "id": "u01-altar",
+      "src": "u01",
+      "file": "09/ChatGPT Image 2026年8月10日 上午09_32_32 (2).png",
+      "note": "極樂祭壇大遠景"
+    },
+    {
+      "id": "u01-crowd",
+      "src": "u01",
+      "file": "09/ChatGPT Image 2026年8月10日 上午09_32_33 (4).png",
+      "note": "教徒狂笑特寫"
+    },
+    {
+      "id": "u01-leader",
+      "src": "u01",
+      "file": "10/ChatGPT Image 2026年8月10日 上午09_28_58 (3).png",
+      "note": "教主在可華耳邊低語"
+    },
+    {
+      "id": "u01-war",
+      "src": "u01",
+      "file": "11/ChatGPT Image 2026年8月10日 上午09_45_08 (1).png",
+      "note": "戰爭幻象・空襲"
+    },
+    {
+      "id": "u01-bliss",
+      "src": "u01",
+      "file": "12/ChatGPT Image 2026年8月10日 上午10_27_37 (3).png",
+      "note": "粉紅極樂幻境"
+    },
+    {
+      "id": "u01-awaken",
+      "src": "u01",
+      "file": "14/ChatGPT Image 2026年8月10日 上午10_19_37 (2).png",
+      "note": "可華猛然停步：不。"
+    },
+    {
+      "id": "u01-refuse",
+      "src": "u01",
+      "file": "15/ChatGPT Image 2026年8月10日 上午10_37_54 (1).png",
+      "note": "可華發光反駁"
+    },
+    {
+      "id": "u01-friends",
+      "src": "u01",
+      "file": "15/ChatGPT Image 2026年8月10日 上午10_37_54 (2).png",
+      "note": "光影：說服朋友和好"
+    },
+    {
+      "id": "u01-rocket",
+      "src": "u01",
+      "file": "15/ChatGPT Image 2026年8月10日 上午11_09_01 (3).png",
+      "note": "光影：火箭升空"
+    },
+    {
+      "id": "u01-wonders",
+      "src": "u01",
+      "file": "其他/ChatGPT Image 2026年8月10日 上午11_09_00 (2).png",
+      "note": "光影：文明奇觀"
+    },
+    {
+      "id": "u01-rage",
+      "src": "u01",
+      "file": "16/ChatGPT Image 2026年8月10日 上午11_11_24.png",
+      "note": "教主震怒特寫"
+    },
+    {
+      "id": "u01-fire",
+      "src": "u01",
+      "file": "17/ChatGPT Image 2026年8月10日 上午11_15_28 (1).png",
+      "note": "火焰中的可華"
+    },
+    {
+      "id": "u01-key",
+      "src": "u01",
+      "file": "其他/ChatGPT Image 2026年8月10日 上午11_26_31 (2).png",
+      "note": "★ 手中幻化出鑰匙（鑄鑰畫面主圖）"
+    },
+    {
+      "id": "u01-turnkey",
+      "src": "u01",
+      "file": "18/ChatGPT Image 2026年8月10日 上午11_26_31 (3).png",
+      "note": "鑰匙插入空氣扭轉"
+    },
+    {
+      "id": "u01-lightdoor",
+      "src": "u01",
+      "file": "18/ChatGPT Image 2026年8月10日 上午11_26_32 (4).png",
+      "note": "光之大門敞開"
+    },
+    {
+      "id": "u01-rescue",
+      "src": "u01",
+      "file": "18/ChatGPT Image 2026年8月10日 上午11_26_33 (6).png",
+      "note": "小文把可華拉出"
+    }
+  ]
+}

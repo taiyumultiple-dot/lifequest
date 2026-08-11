@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>登入中…｜五門・心靈迷宮</title>
+<style>
+  html, body {
+    margin: 0; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: #070B14; color: #EAF2FF;
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    text-align: center;
+  }
+  .box { padding: 24px; }
+  h1 { font-size: 17px; font-weight: 700; margin: 0 0 8px; }
+  p { font-size: 13px; color: #A9BAD4; margin: 0; line-height: 1.8; }
+  .bar { width: 160px; height: 2px; margin: 18px auto 0; background: rgba(255,255,255,.12); border-radius: 2px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 40%; border-radius: 2px;
+    background: linear-gradient(90deg, transparent, #E9C877, transparent);
+    animation: sweep 1.2s ease-in-out infinite; }
+  @keyframes sweep { from { transform: translateX(-120%); } to { transform: translateX(320%); } }
+  .err { color: #E0574F; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h1 id="t">正在完成登入…</h1>
+  <p id="m">完成後這個視窗會自動關閉。</p>
+  <div class="bar"><i></i></div>
+</div>
+
+<!--
+  這一頁只做一件事：接住 Google 導回來的結果，
+  讓 Supabase 把登入狀態寫進 localStorage，然後把自己關掉。
+  遊戲那一頁會偵測到登入完成並繼續。
+-->
+<script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+(function () {
+  "use strict";
+  var cfg = (window.LQ && window.LQ.config) || {};
+
+  /** 把結果回報給開啟這個視窗的遊戲頁，讓它不用空等 */
+  function report(ok, msg) {
+    try {
+      if (window.opener) {
+        window.opener.postMessage(
+          { source: "lifequest-auth", ok: ok, message: msg || "" },
+          location.origin
+        );
+      }
+    } catch (e) { /* 對方可能已經關了 */ }
+  }
+
+  function fail(msg) {
+    document.getElementById("t").textContent = "登入沒有完成";
+    document.getElementById("t").className = "err";
+    document.getElementById("m").textContent = msg + "　你可以關掉這個視窗再試一次。";
+    report(false, msg);
+  }
+
+  if (!window.supabase || !cfg.supabaseUrl) {
+    fail("設定不完整。");
+    return;
+  }
+
+  // detectSessionInUrl: true → 會自動把網址上的授權碼換成登入狀態
+  var sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+
+  // 網址上如果直接帶了錯誤訊息，先顯示出來
+  var hash = new URLSearchParams(location.hash.replace(/^#/, ""));
+  var query = new URLSearchParams(location.search);
+  var err = hash.get("error_description") || query.get("error_description") ||
+            hash.get("error") || query.get("error");
+  if (err) { fail(decodeURIComponent(err)); return; }
+
+  var tries = 0;
+  var timer = setInterval(function () {
+    tries += 1;
+    sb.auth.getSession().then(function (r) {
+      if (r.data && r.data.session) {
+        clearInterval(timer);
+        document.getElementById("t").textContent = "登入成功";
+        document.getElementById("m").textContent = "正在回到遊戲…";
+        report(true, "");
+        setTimeout(function () { window.close(); }, 600);
+      } else if (tries > 20) {
+        clearInterval(timer);
+        fail("等太久了。");
+      }
+    });
+  }, 500);
+})();
+</script>
+</body>
+</html>
