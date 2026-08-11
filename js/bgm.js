@@ -25,7 +25,22 @@
     return (LQ.config && LQ.config.music) || { mode: "off" };
   }
 
+  /**
+   * 被別的網站用 iframe 嵌進去時（例如放進 AI Studio 的 React 站台），
+   * 外層通常已經有自己的背景音樂，這裡再放一首會兩首疊在一起。
+   * 所以嵌入時一律不放音樂，交給外層負責——跟 js/pwa.js 跳過
+   * service worker 註冊是同一個理由。
+   */
+  function embedded() {
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;   // 跨網域 iframe 連讀 top 都會被擋，那更該讓外層決定
+    }
+  }
+
   function mode() {
+    if (embedded()) return "off";
     var m = cfg().mode;
     if (m === "youtube" && !cfg().youtubeId) return "off";
     if (m === "file" && !cfg().file) return "off";
