@@ -57,14 +57,17 @@
 
 <!-- 底部導覽 -->
 <!-- 五扇門排第一顆，因為它是進遊戲的第一頁。
-     補給站併進「每日」；第四顆直接進塔羅（心象探索的其他三樣工具
-     ——星座、自我探索測驗、價值羅盤——從塔羅頁底部那顆按鈕過去）。
-     窄螢幕顯示「塔羅牌」，寬螢幕才顯示完整的「塔羅・心象牌」。 -->
+     補給站併進「每日」；原本的「心象」拆成四顆，塔羅／星座／心理測驗／
+     價值羅盤各自有入口。十顆在手機上會很擠，所以窄螢幕把後兩顆的字
+     縮成「測驗」「價值」（見 css 的 .nav__long / .nav__short）。 -->
 <nav id="nav" class="nav" hidden>
   <button type="button" data-go="hub" class="nav__main"><i>⌘</i><span>五扇門</span></button>
   <button type="button" data-go="daily"><i>◷</i><span>每日</span></button>
   <button type="button" data-go="lessons"><i>▤</i><span>課本</span></button>
-  <button type="button" data-go="tarot"><i>✦</i><span class="nav__long">塔羅・心象牌</span><span class="nav__short">塔羅牌</span></button>
+  <button type="button" data-go="tarot"><i>✦</i><span>塔羅</span></button>
+  <button type="button" data-go="zodiac"><i>☉</i><span>星座</span></button>
+  <button type="button" data-go="psych"><i>◈</i><span class="nav__long">心理測驗</span><span class="nav__short">測驗</span></button>
+  <button type="button" data-go="values"><i>⚖</i><span class="nav__long">價值羅盤</span><span class="nav__short">價值</span></button>
   <button type="button" data-go="character"><i>☾</i><span>人物</span></button>
   <button type="button" data-go="help"><i>?</i><span>說明</span></button>
   <button type="button" data-go="settings"><i>⚙</i><span>設定</span></button>

@@ -25,14 +25,15 @@
     values:    function () { LQ.ui.values.render(); }
   };
 
-  /* 底部導覽七顆：五扇門／每日／課本／心象／人物／說明／設定。
-     沒有自己那一顆的畫面，歸在最接近的那一顆底下反白。
-     補給站與迷障圖鑑現在住在「每日」裡，塔羅與星座住在「心象」裡。 */
+  /* 底部導覽十顆：五扇門／每日／課本／塔羅／星座／心理測驗／價值羅盤／
+     人物／說明／設定。原本「心象」那一顆拆成四顆，四樣工具各自有入口。
+     沒有自己那一顆的畫面，歸在最接近的那一顆底下反白
+     （心象探索的總覽頁歸在塔羅底下，補給站與迷障圖鑑歸在每日底下）。 */
   var NAV_OF = { hub: "hub", journal: "hub",
                  daily: "daily", shop: "daily", codex: "daily",
                  lessons: "lessons",
-                 oracle: "oracle", tarot: "oracle", zodiac: "oracle",
-                 psych: "oracle", values: "oracle",
+                 tarot: "tarot", oracle: "tarot",
+                 zodiac: "zodiac", psych: "psych", values: "values",
                  character: "character", settings: "settings" };
 
   /** 把 HTML 放進主畫面容器 */
