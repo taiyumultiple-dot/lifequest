@@ -35,7 +35,10 @@
       '<div class="zgrid">' +
         LQ.data.zodiac.map(function (z) {
           return '<button type="button" class="zcell" data-z="' + z.id + '">' +
-            '<span class="zcell__g">' + esc(z.glyph) + "</span>" +
+            '<span class="zcell__pic">' +
+              '<img src="' + LQ.data.zodiacImage(z.id) + '" alt="" loading="lazy">' +
+              '<i class="zcell__g">' + esc(z.glyph) + "</i>" +
+            "</span>" +
             "<b>" + esc(z.name) + "</b>" +
             "<small>" + esc(z.date) + "</small>" +
           "</button>";
@@ -70,10 +73,12 @@
     var b = LQ.data.zodiacBarnum;
 
     LQ.render(
-      /* 細長版海報，只露出星盤中央，當作這一頁的抬頭 */
-      '<div class="zband"><img src="' + LQ.data.scene("zodiac-wheel") + '" alt=""></div>' +
-
-      '<div class="sect"><h2>' + esc(z.name) + "</h2><small>" + esc(z.date) + "</small></div>" +
+      /* 這一頁的抬頭換成「你自己那一張」星座圖 */
+      '<div class="zhero zhero--sign">' +
+        '<img src="' + LQ.data.zodiacImage(z.id) + '" alt="' + esc(z.name) + '">' +
+        '<div class="zhero__cap"><span>' + esc(z.glyph) + "</span><b>" + esc(z.name) +
+          "</b><small>" + esc(z.date) + "</small></div>" +
+      "</div>" +
 
       /* 今日提問擺最上面，因為那才是每天要做的事 */
       '<div class="card card--gold">' +
@@ -87,27 +92,23 @@
 
       '<div class="sect" style="margin-top:22px"><h2>別人常這樣說你</h2></div>' +
 
-      '<div class="card">' +
-        '<div class="card__eyebrow">' + esc(z.glyph) + "　常見說法</div>" +
-        '<p class="card__note" style="color:var(--ink-soft)">' + esc(z.said) + "</p>" +
+      /* 原本是五張並排的卡片，看起來像表格。
+         改成一段可以從頭讀到尾的話：先引述、再翻面、最後兩個小提醒。 */
+      '<div class="zsay">' +
+        '<blockquote class="zsay__quote">' +
+          '<span class="zsay__glyph">' + esc(z.glyph) + "</span>" +
+          esc(z.said) +
+        "</blockquote>" +
+
+        '<p class="zsay__turn"><b>其實——</b>' + esc(z.truth) + "</p>" +
+
+        '<div class="zsay__notes">' +
+          '<div><span>成長課題</span><p>' + esc(z.lesson) + "</p></div>" +
+          '<div><span>容易卡住</span><p>' + esc(z.stuck) + "</p></div>" +
+        "</div>" +
       "</div>" +
 
-      '<div class="card" style="margin-top:12px">' +
-        '<div class="card__eyebrow">同一件事的另一面</div>' +
-        '<p class="card__note" style="color:var(--ink);font-size:14.5px">' + esc(z.truth) + "</p>" +
-      "</div>" +
-
-      '<div class="card" style="margin-top:12px">' +
-        '<div class="card__eyebrow">成長課題</div>' +
-        '<p class="card__note">' + esc(z.lesson) + "</p>" +
-      "</div>" +
-
-      '<div class="card" style="margin-top:12px">' +
-        '<div class="card__eyebrow">容易卡住的地方</div>' +
-        '<p class="card__note">' + esc(z.stuck) + "</p>" +
-      "</div>" +
-
-      '<div class="card" style="margin-top:12px">' +
+      '<div class="card card--gold" style="margin-top:14px">' +
         '<div class="card__eyebrow">給你的問題</div>' +
         '<p class="card__note" style="color:var(--ink);font-size:14.5px">' + esc(z.ask) + "</p>" +
       "</div>" +

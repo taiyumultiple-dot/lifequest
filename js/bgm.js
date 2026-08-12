@@ -27,11 +27,17 @@
 
   /**
    * 被別的網站用 iframe 嵌進去時（例如放進 AI Studio 的 React 站台），
-   * 外層通常已經有自己的背景音樂，這裡再放一首會兩首疊在一起。
-   * 所以嵌入時一律不放音樂，交給外層負責——跟 js/pwa.js 跳過
+   * 外層可能已經有自己的背景音樂，這裡再放一首會兩首疊在一起。
+   * 所以嵌入時預設不放音樂，交給外層決定——跟 js/pwa.js 跳過
    * service worker 註冊是同一個理由。
+   *
+   * 外層如果自己沒有音樂、希望遊戲照常放，就在 iframe 的網址後面加
+   * ?bgm=1（生命教育平台的 FiveGatesGame.tsx 就是這樣叫的）。
    */
   function embedded() {
+    try {
+      if (/[?&]bgm=1\b/.test(location.search)) return false;   // 外層明講要放
+    } catch (e) { /* 讀不到就當作嵌入 */ }
     try {
       return window.self !== window.top;
     } catch (e) {

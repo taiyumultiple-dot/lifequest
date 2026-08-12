@@ -173,4 +173,9 @@
     return null;
   };
 
+  /** 星座代號 → 那一張星座圖（assets/zodiac/aries.webp …）*/
+  LQ.data.zodiacImage = function (id) {
+    return id ? ("assets/zodiac/" + id + ".webp") : "";
+  };
+
 })(window.LQ = window.LQ || {});

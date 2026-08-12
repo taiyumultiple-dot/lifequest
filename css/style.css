@@ -337,12 +337,29 @@
   aspect-ratio: 1 / 1.24; border-radius: 10px; padding: 6px 2px;
   border: 1px solid var(--line); background: rgba(255,255,255,.03);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  font: inherit; color: inherit; width: 100%;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
 .day b { font-size: 10.5px; color: var(--ink-faint); }
 .day i { font-style: normal; font-size: 15px; color: rgba(255,255,255,.16); }
 .day--done { border-color: var(--line-gold); background: rgba(233,200,119,.12); }
 .day--done i { color: var(--gold); }
 .day--done b { color: var(--gold); }
+
+/* 今天可以蓋的那一格：會呼吸，點得下去 */
+.day--next {
+  cursor: pointer; border-color: var(--line-gold);
+  background: rgba(233,200,119,.06);
+  animation: dayPulse 2.4s var(--ease) infinite;
+}
+.day--next i { color: var(--gold); opacity: .9; }
+.day--next b { color: var(--gold); }
+.day--next:hover { background: rgba(233,200,119,.16); }
+.day[disabled] { cursor: default; }
+@keyframes dayPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(233,200,119,.28); }
+  50%      { box-shadow: 0 0 0 5px rgba(233,200,119,0); }
+}
 
 /* ==========================================================================
    圖鑑
@@ -592,6 +609,50 @@
   opacity: .92;
 }
 
+/* 選定星座之後，抬頭換成那個星座自己的圖，名字壓在圖的下緣。
+   圖是 4:5 的直式海報，桌機滿版時要限寬置中，不然整張會被裁掉。 */
+.zhero--sign { max-width: 420px; margin-left: auto; margin-right: auto; }
+.zhero--sign img { object-position: center center; max-height: none; }
+.zhero__cap {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+  padding: 14px 16px; display: flex; align-items: baseline; gap: 10px;
+}
+.zhero__cap span { font-size: 22px; color: var(--gold); line-height: 1; }
+.zhero__cap b { font-size: 20px; letter-spacing: .04em; }
+.zhero__cap small { font-size: 11.5px; color: var(--ink-faint); }
+
+/* --- 別人常這樣說你 --------------------------------------------------
+   刻意不用卡片：一句引述、一次翻面、兩個小提醒，讓它讀起來像一段話，
+   而不是一張表格。 */
+
+.zsay { padding: 2px 0 0; }
+.zsay__quote {
+  position: relative; margin: 0; padding: 0 0 0 42px;
+  font-size: 15px; line-height: 1.9; color: var(--ink-soft);
+}
+.zsay__glyph {
+  position: absolute; left: 0; top: -6px;
+  font-size: 30px; line-height: 1; color: var(--gold); opacity: .75;
+}
+.zsay__turn {
+  margin: 16px 0 0; padding: 0 0 0 42px;
+  font-size: 15.5px; line-height: 1.95; color: var(--ink);
+}
+.zsay__turn b { color: var(--gold); letter-spacing: .04em; }
+.zsay__notes {
+  margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+}
+.zsay__notes span {
+  display: block; font-size: 10.5px; letter-spacing: .12em;
+  color: var(--gold); margin-bottom: 6px;
+}
+.zsay__notes p { margin: 0; font-size: 13px; line-height: 1.85; color: var(--ink-soft); }
+@media (max-width: 439px) {
+  .zsay__notes { grid-template-columns: 1fr; gap: 14px; }
+  .zsay__quote, .zsay__turn { padding-left: 36px; }
+}
+
 /* --- 星座選擇格 ------------------------------------------------------ */
 
 .zgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
@@ -602,9 +663,24 @@
   transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
 .zcell:hover { border-color: var(--line-gold); background: rgba(233,200,119,.09); }
-.zcell__g { font-size: 24px; line-height: 1.2; color: var(--gold); }
 .zcell b { font-size: 13.5px; }
 .zcell small { font-size: 10.5px; color: var(--ink-faint); }
+
+/* 選星座時直接看到那張圖，符號壓在右上角 */
+.zcell__pic {
+  position: relative; display: block; width: 100%;
+  border-radius: 10px; overflow: hidden; margin-bottom: 6px;
+  border: 1px solid var(--line);
+}
+.zcell__pic img {
+  display: block; width: 100%; aspect-ratio: 4 / 5;
+  object-fit: cover; object-position: center 26%;
+}
+.zcell__g {
+  position: absolute; right: 5px; top: 3px;
+  font-size: 17px; line-height: 1.2; color: var(--gold); font-style: normal;
+  text-shadow: 0 1px 4px rgba(0,0,0,.85);
+}
 
 /* --- 價值卡 ---------------------------------------------------------- */
 
@@ -788,10 +864,15 @@
 }
 
 /* ==========================================================================
-   桌機：稍微加大，但維持手機版面（這是手機遊戲的排版）
+   平板：稍微加大，但維持手機版面（這是手機遊戲的排版）
    ========================================================================== */
 @media (min-width: 720px) {
   :root { --wrap: 600px; }
   body { background-attachment: fixed; }
   .story__box { margin-top: -120px; }
+}
+
+/* 桌機：版面放到滿版，不要再被手機的閱讀寬度綁住 */
+@media (min-width: 900px) {
+  :root { --wrap: 94vw; }
 }

@@ -19,11 +19,18 @@
       var askedToday = LQ.oracle.seenToday("zodiacDate");
       var zodiac = o.zodiac ? LQ.data.zodiacById(o.zodiac) : null;
 
+      // 今天蓋過章了嗎（蓋過就不能再蓋，一天只算一次）
+      var stampedToday = LQ.daily.checkedInToday();
+
       var week = "";
       for (var i = 0; i < 7; i++) {
         var done = i < stamps;
-        week += '<div class="day' + (done ? " day--done" : "") + '">' +
-                "<b>第 " + (i + 1) + " 天</b><i>" + (done ? "✦" : "○") + "</i></div>";
+        // 下一個待蓋的格子做成可以點的；其餘只是顯示
+        var isNext = !stampedToday && i === stamps;
+        week += '<button type="button" class="day' +
+                  (done ? " day--done" : "") + (isNext ? " day--next" : "") +
+                  '" data-stamp="1"' + (isNext ? "" : " disabled") + '>' +
+                "<b>第 " + (i + 1) + " 天</b><i>" + (done ? "✦" : "○") + "</i></button>";
       }
 
       LQ.render(
@@ -46,7 +53,10 @@
         '<div class="sect"><h2>七日打卡</h2><small>' + stamps + " / 7</small></div>" +
         '<div class="week">' + week + "</div>" +
         '<p style="font-size:12.5px;color:var(--ink-faint);margin-top:10px">' +
-          "每天完成一次每日思辨就蓋一個章。集滿七天，額外拿 " + LQ.daily.CHECKIN_BONUS + " 記憶碎片。</p>" +
+          (stampedToday
+            ? "今天的章已經蓋好了，明天再來。"
+            : "點今天那一格就可以蓋章（完成每日思辨也會自動蓋）。") +
+          "集滿七天，額外拿 " + LQ.daily.CHECKIN_BONUS + " 記憶碎片。</p>" +
 
         '<div class="sect"><h2>迷障追跡</h2></div>' +
         '<div class="card">' +
@@ -92,6 +102,22 @@
             '<span class="row__val">' + LQ.state.d.journal.length + " 則</span></button>" +
         "</div>"
       );
+
+      // 點今天那一格就蓋章。一天只能蓋一次，集滿七天發獎勵並重新開始一輪。
+      document.querySelectorAll("[data-stamp]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          if (b.disabled) return;
+          LQ.audio.tap();
+          var bonus = LQ.daily.checkIn();
+          if (bonus) {
+            LQ.economy.gainFrag(bonus);
+            LQ.ui.modal.toast("集滿七天！額外拿到 " + bonus + " 記憶碎片");
+          } else {
+            LQ.ui.modal.toast("今天的章蓋好了");
+          }
+          LQ.ui.daily.render();
+        });
+      });
 
       document.getElementById("dy-start").addEventListener("click", function () {
         LQ.audio.tap();
