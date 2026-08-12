@@ -25,11 +25,15 @@
     values:    function () { LQ.ui.values.render(); }
   };
 
-  // 底部導覽七顆；沒有自己那一顆的畫面，歸在最接近的那一顆底下
-  var NAV_OF = { hub: "hub", daily: "daily", codex: "hub", journal: "hub",
-                 character: "character", shop: "shop", settings: "settings",
-                 tarot: "tarot", zodiac: "zodiac", lessons: "lessons",
-                 oracle: "hub", psych: "hub", values: "hub" };
+  /* 底部導覽七顆：五扇門／每日／課本／心象／人物／說明／設定。
+     沒有自己那一顆的畫面，歸在最接近的那一顆底下反白。
+     補給站與迷障圖鑑現在住在「每日」裡，塔羅與星座住在「心象」裡。 */
+  var NAV_OF = { hub: "hub", journal: "hub",
+                 daily: "daily", shop: "daily", codex: "daily",
+                 lessons: "lessons",
+                 oracle: "oracle", tarot: "oracle", zodiac: "oracle",
+                 psych: "oracle", values: "oracle",
+                 character: "character", settings: "settings" };
 
   /** 把 HTML 放進主畫面容器 */
   function render(html) {
@@ -44,6 +48,8 @@
 
   /** 切到某個畫面 */
   function go(name) {
+    // 「說明」是彈窗不是畫面，開完就留在原本那一頁
+    if (name === "help") { LQ.ui.help.open("forge"); return; }
     if (!SCREENS[name]) name = "hub";
     current = name;
     SCREENS[name]();

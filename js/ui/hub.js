@@ -73,33 +73,11 @@
         '<div class="sect"><h2>門扉</h2><small>' + cleared + " / " + LQ.data.units.length + " 已通過</small></div>" +
         '<div class="doors">' + LQ.data.units.map(doorHTML).join("") + "</div>" +
 
-        '<div class="sect"><h2>其他去處</h2></div>' +
-        '<div class="rows">' +
-          '<button type="button" class="row" data-go="daily"><i>◷</i>' +
-            "<div><b>每日思辨</b><p>一天一個生活情境，想清楚就有記憶碎片。</p></div>" +
-            '<span class="row__val">' + (LQ.state.d.daily.firstDone && LQ.state.d.daily.date === LQ.state.today() ? "今日已通" : "未完成") + "</span></button>" +
-          '<button type="button" class="row" data-go="codex"><i>◈</i>' +
-            "<div><b>迷障圖鑑</b><p>你破解過的思考陷阱，都收在這裡。</p></div>" +
-            '<span class="row__val">' + Object.keys(LQ.state.d.illusions).length + " / " + LQ.data.illusions.length + "</span></button>" +
-          '<button type="button" class="row" data-go="lessons"><i>▤</i>' +
-            "<div><b>課本單元</b><p>六個單元對應五大素養，每個單元都連著一扇門。</p></div>" +
-            '<span class="row__val">' + LQ.lessons.overall() + "%</span></button>" +
-          '<button type="button" class="row" data-go="oracle"><i>✦</i>' +
-            "<div><b>心象探索</b><p>心象牌、自我探索測驗、星座提問、價值羅盤。不預測未來，只給你一個角度。</p></div>" +
-            '<span class="row__val">四樣</span></button>' +
-          '<button type="button" class="row" data-go="journal"><i>✎</i>' +
-            "<div><b>成長紀錄</b><p>你在每一關結束時寫下的句子。</p></div>" +
-            '<span class="row__val">' + LQ.state.d.journal.length + " 則</span></button>" +
-          '<button type="button" class="row" id="hub-help"><i>?</i>' +
-            "<div><b>怎麼玩</b><p>鑄鑰規則圖解、數值說明、給老師的課堂建議。</p></div>" +
-            '<span class="row__val">說明</span></button>' +
-        "</div>"
+        /* 這一頁只留「門」。原本底下那串「其他去處」已經移到「每日」，
+           課本、心象、說明也各自有自己的導覽鈕，不必在這裡再列一次。 */
+        '<p class="hub__foot">其他玩法收在下面的「每日」，' +
+          "課本、心象探索、說明各有自己的按鈕。</p>"
       );
-
-      document.getElementById("hub-help").addEventListener("click", function () {
-        LQ.audio.tap();
-        LQ.ui.help.open("forge");
-      });
 
       document.querySelectorAll("[data-unit]").forEach(function (b) {
         b.addEventListener("click", function () {

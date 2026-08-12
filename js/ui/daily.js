@@ -70,6 +70,26 @@
             (zodiac ? esc(zodiac.name) + "。每天換一題。" : "先選你的星座，之後每天一題。") +
             "</p></div>" +
             '<span class="row__val">' + (askedToday ? "已看" : "未看") + "</span></button>" +
+        "</div>" +
+
+        /* 補給站搬到這裡。它花的是每日思辨賺來的碎片，
+           放在賺碎片的地方旁邊，比自己占一顆導覽鈕合理。 */
+        '<div class="sect" style="margin-top:22px"><h2>補給站</h2><small>記憶碎片 ' +
+          LQ.state.d.frag + "</small></div>" +
+        '<p style="font-size:12.5px;color:var(--ink-soft);margin-bottom:12px;line-height:1.85">' +
+          "碎片可以換成撐得更久的力氣。先把心力與思考力顧好，再去走更深的門。</p>" +
+        LQ.ui.shop.html() +
+
+        /* 原本掛在五扇門那頁的「其他去處」，只留沒有導覽鈕的兩個 */
+        '<div class="sect" style="margin-top:22px"><h2>其他去處</h2></div>' +
+        '<div class="rows">' +
+          '<button type="button" class="row" data-go="codex"><i>◈</i>' +
+            "<div><b>迷障圖鑑</b><p>你破解過的思考陷阱，都收在這裡。</p></div>" +
+            '<span class="row__val">' + Object.keys(LQ.state.d.illusions).length +
+            " / " + LQ.data.illusions.length + "</span></button>" +
+          '<button type="button" class="row" data-go="journal"><i>✎</i>' +
+            "<div><b>成長紀錄</b><p>你在每一關結束時寫下的句子。</p></div>" +
+            '<span class="row__val">' + LQ.state.d.journal.length + " 則</span></button>" +
         "</div>"
       );
 
@@ -81,6 +101,8 @@
         LQ.audio.tap();
         LQ.hunt.start();
       });
+      // 在這一頁買東西，買完重畫這一頁（不要跳去補給站）
+      LQ.ui.shop.bind(LQ.ui.daily.render);
     }
   };
 

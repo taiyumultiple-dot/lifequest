@@ -21,7 +21,7 @@
     return item.max != null && bought(item) >= item.max;
   }
 
-  function buy(item) {
+  function buy(item, after) {
     if (soldOut(item)) { LQ.ui.modal.toast("這個已經買到上限了", true); return; }
 
     if (item.kind === "use" && item.restore) {
@@ -44,44 +44,66 @@
     LQ.audio.coin();
     LQ.ui.modal.toast("買下了「" + item.name + "」");
     LQ.refreshTopbar();
-    LQ.ui.shop.render();
+    if (after) after(); else LQ.ui.shop.render();
+  }
+
+  /**
+   * 商品清單的 HTML。抽出來是因為補給站現在住在「每日」那一頁裡，
+   * 兩邊共用同一份，不要複製貼上。
+   */
+  function goodsHTML() {
+    return '<div class="goods">' +
+      LQ.data.shop.map(function (item) {
+        var p = price(item);
+        var out = soldOut(item);
+        var poor = !out && LQ.state.d.frag < p;
+        var lvText = item.kind === "perm"
+          ? ("已購 " + bought(item) + " 次" + (item.max != null ? "／上限 " + item.max : ""))
+          : "一次性消耗品";
+
+        /* 價格本身就是購買鈕。以前只印一個數字，看起來像標籤沒人敢點，
+           現在把「買下」兩個字寫出來；碎片不夠就變灰並直接說還差多少。 */
+        var label = out ? "已購滿"
+                        : (poor ? "還差 " + (p - LQ.state.d.frag) + " ✦"
+                                : "買下 " + p + " ✦");
+
+        return '<div class="good">' +
+          '<div class="good__ico">' + esc(item.glyph) + "</div>" +
+          '<div class="good__body">' +
+            "<b>" + esc(item.name) + "</b>" +
+            "<p>" + esc(item.desc) + "</p>" +
+            "<em>" + esc(lvText) + "・" + esc(item.note) + "</em>" +
+          "</div>" +
+          '<button type="button" class="btn btn--sm good__buy ' +
+            (out || poor ? "btn--ghost" : "btn--gold") + '" data-buy="' + item.id + '"' +
+            (out ? " disabled" : "") + ">" + label + "</button>" +
+        "</div>";
+      }).join("") +
+    "</div>";
+  }
+
+  /** 綁定購買。after 是買完之後要重畫哪一頁 */
+  function bindGoods(after) {
+    document.querySelectorAll("[data-buy]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        buy(LQ.data.shopById(b.dataset.buy), after);
+      });
+    });
   }
 
   LQ.ui = LQ.ui || {};
   LQ.ui.shop = {
+    html: goodsHTML,
+    bind: bindGoods,
     render: function () {
-      var d = LQ.state.d;
-
       LQ.render(
-        '<div class="sect"><h2>補給站</h2><small>記憶碎片 ' + d.frag + "</small></div>" +
+        '<div class="sect"><h2>補給站</h2><small>記憶碎片 ' + LQ.state.d.frag + "</small></div>" +
         '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:14px">' +
           "在迷宮裡撿到的記憶碎片可以換成撐得更久的力氣。<br>" +
           "先把心力與思考力顧好，再去走更深的門。</p>" +
-
-        '<div class="goods">' +
-          LQ.data.shop.map(function (item) {
-            var p = price(item);
-            var out = soldOut(item);
-            var lvText = item.kind === "perm"
-              ? ("已購 " + bought(item) + " 次" + (item.max != null ? "／上限 " + item.max : ""))
-              : "一次性消耗品";
-            return '<div class="good">' +
-              '<div class="good__ico">' + esc(item.glyph) + "</div>" +
-              '<div class="good__body">' +
-                "<b>" + esc(item.name) + "</b>" +
-                "<p>" + esc(item.desc) + "</p>" +
-                "<em>" + esc(lvText) + "・" + esc(item.note) + "</em>" +
-              "</div>" +
-              '<button type="button" class="btn btn--gold btn--sm" data-buy="' + item.id + '"' +
-                (out ? " disabled" : "") + ">" + (out ? "已滿" : p + " ✦") + "</button>" +
-            "</div>";
-          }).join("") +
-        "</div>"
+        goodsHTML()
       );
-
-      document.querySelectorAll("[data-buy]").forEach(function (b) {
-        b.addEventListener("click", function () { buy(LQ.data.shopById(b.dataset.buy)); });
-      });
+      bindGoods(LQ.ui.shop.render);
     }
   };
 

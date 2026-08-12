@@ -12,9 +12,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap">
-<link rel="stylesheet" href="css/tokens.css?v=22">
-<link rel="stylesheet" href="css/components.css?v=22">
-<link rel="stylesheet" href="css/style.css?v=22">
+<link rel="stylesheet" href="css/tokens.css?v=23">
+<link rel="stylesheet" href="css/components.css?v=23">
+<link rel="stylesheet" href="css/style.css?v=23">
 </head>
 <body>
 
@@ -56,14 +56,16 @@
 <main id="screen" class="screen" hidden></main>
 
 <!-- 底部導覽 -->
+<!-- 五扇門排第一顆，因為它是進遊戲的第一頁。
+     補給站併進「每日」、塔羅與星座併回「心象」（它們本來就是它的子頁），
+     少掉兩顆重複的入口，剩下的每一顆才有足夠的寬度。 -->
 <nav id="nav" class="nav" hidden>
-  <button type="button" data-go="shop"><i>❖</i><span>補給站</span></button>
-  <button type="button" data-go="character"><i>☾</i><span>人物</span></button>
   <button type="button" data-go="hub" class="nav__main"><i>⌘</i><span>五扇門</span></button>
-  <button type="button" data-go="tarot"><i>✦</i><span>塔羅</span></button>
-  <button type="button" data-go="zodiac"><i>✩</i><span>星座</span></button>
   <button type="button" data-go="daily"><i>◷</i><span>每日</span></button>
   <button type="button" data-go="lessons"><i>▤</i><span>課本</span></button>
+  <button type="button" data-go="oracle"><i>✦</i><span>心象</span></button>
+  <button type="button" data-go="character"><i>☾</i><span>人物</span></button>
+  <button type="button" data-go="help"><i>?</i><span>說明</span></button>
   <button type="button" data-go="settings"><i>⚙</i><span>設定</span></button>
 </nav>
 
@@ -80,51 +82,51 @@
 <div id="modal" class="modal" hidden></div>
 <div id="toast" class="toast" aria-live="polite"></div>
 
-<script src="js/config.js?v=22"></script>
-<script src="js/data/characters.js?v=22"></script>
-<script src="js/data/illusions.js?v=22"></script>
-<script src="js/data/titles.js?v=22"></script>
-<script src="js/data/shop-items.js?v=22"></script>
-<script src="js/data/daily-sets.js?v=22"></script>
-<script src="js/data/units.js?v=22"></script>
-<script src="js/data/tarot.js?v=22"></script>
-<script src="js/data/psychtests.js?v=22"></script>
-<script src="js/data/zodiac.js?v=22"></script>
-<script src="js/data/values.js?v=22"></script>
-<script src="js/data/lessons.js?v=22"></script>
-<script src="js/state.js?v=22"></script>
-<script src="js/cloud.js?v=22"></script>
-<script src="js/audio.js?v=22"></script>
-<script src="js/bgm.js?v=22"></script>
-<script src="js/game/keyforge.js?v=22"></script>
-<script src="js/game/economy.js?v=22"></script>
-<script src="js/game/daily.js?v=22"></script>
-<script src="js/game/illusions.js?v=22"></script>
-<script src="js/game/titles.js?v=22"></script>
-<script src="js/game/oracle.js?v=22"></script>
-<script src="js/game/lessons.js?v=22"></script>
-<script src="js/ui/modal.js?v=22"></script>
-<script src="js/ui/help.js?v=22"></script>
-<script src="js/ui/login.js?v=22"></script>
-<script src="js/ui/story.js?v=22"></script>
-<script src="js/ui/forge.js?v=22"></script>
-<script src="js/game/levelflow.js?v=22"></script>
-<script src="js/game/hunt.js?v=22"></script>
-<script src="js/ui/hub.js?v=22"></script>
-<script src="js/ui/daily.js?v=22"></script>
-<script src="js/ui/codex.js?v=22"></script>
-<script src="js/ui/character.js?v=22"></script>
-<script src="js/ui/shop.js?v=22"></script>
-<script src="js/ui/journal.js?v=22"></script>
+<script src="js/config.js?v=23"></script>
+<script src="js/data/characters.js?v=23"></script>
+<script src="js/data/illusions.js?v=23"></script>
+<script src="js/data/titles.js?v=23"></script>
+<script src="js/data/shop-items.js?v=23"></script>
+<script src="js/data/daily-sets.js?v=23"></script>
+<script src="js/data/units.js?v=23"></script>
+<script src="js/data/tarot.js?v=23"></script>
+<script src="js/data/psychtests.js?v=23"></script>
+<script src="js/data/zodiac.js?v=23"></script>
+<script src="js/data/values.js?v=23"></script>
+<script src="js/data/lessons.js?v=23"></script>
+<script src="js/state.js?v=23"></script>
+<script src="js/cloud.js?v=23"></script>
+<script src="js/audio.js?v=23"></script>
+<script src="js/bgm.js?v=23"></script>
+<script src="js/game/keyforge.js?v=23"></script>
+<script src="js/game/economy.js?v=23"></script>
+<script src="js/game/daily.js?v=23"></script>
+<script src="js/game/illusions.js?v=23"></script>
+<script src="js/game/titles.js?v=23"></script>
+<script src="js/game/oracle.js?v=23"></script>
+<script src="js/game/lessons.js?v=23"></script>
+<script src="js/ui/modal.js?v=23"></script>
+<script src="js/ui/help.js?v=23"></script>
+<script src="js/ui/login.js?v=23"></script>
+<script src="js/ui/story.js?v=23"></script>
+<script src="js/ui/forge.js?v=23"></script>
+<script src="js/game/levelflow.js?v=23"></script>
+<script src="js/game/hunt.js?v=23"></script>
+<script src="js/ui/hub.js?v=23"></script>
+<script src="js/ui/daily.js?v=23"></script>
+<script src="js/ui/codex.js?v=23"></script>
+<script src="js/ui/character.js?v=23"></script>
+<script src="js/ui/shop.js?v=23"></script>
+<script src="js/ui/journal.js?v=23"></script>
 <!-- 心象探索：oracle.js 要排在其他四支前面，它們用它的共用零件 -->
-<script src="js/ui/oracle.js?v=22"></script>
-<script src="js/ui/tarot.js?v=22"></script>
-<script src="js/ui/psych.js?v=22"></script>
-<script src="js/ui/zodiac.js?v=22"></script>
-<script src="js/ui/values.js?v=22"></script>
-<script src="js/ui/lessons.js?v=22"></script>
-<script src="js/ui/settings.js?v=22"></script>
-<script src="js/main.js?v=22"></script>
-<script src="js/pwa.js?v=22"></script>
+<script src="js/ui/oracle.js?v=23"></script>
+<script src="js/ui/tarot.js?v=23"></script>
+<script src="js/ui/psych.js?v=23"></script>
+<script src="js/ui/zodiac.js?v=23"></script>
+<script src="js/ui/values.js?v=23"></script>
+<script src="js/ui/lessons.js?v=23"></script>
+<script src="js/ui/settings.js?v=23"></script>
+<script src="js/main.js?v=23"></script>
+<script src="js/pwa.js?v=23"></script>
 </body>
 </html>
