@@ -631,63 +631,118 @@
 .tq span { display: block; font-size: 10.5px; letter-spacing: .12em; color: var(--gold); }
 .tq b { display: block; font-size: 14.5px; line-height: 1.8; margin-top: 3px; }
 
-/* 蓋著的整副牌。手機一排 5 張，桌機自己長更多 */
-.tpick {
-  display: grid; gap: 7px;
-  grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+/* 整副牌排成扇形。每張的角度與下沉量由 JS 算好寫進 --deg / --lift，
+   卡片本身只負責把它套用成 transform，這樣張數改了也不用改 CSS。 */
+.tfan {
+  --card-w: 62px;
+  --pivot: 300px;          /* 旋轉軸心離牌頂多遠。越大扇形越開 */
+  position: relative;
+  height: 230px; margin: 4px 0 14px;
+  overflow: hidden;        /* 兩端的牌超出去就切掉，不要撐出橫向捲軸 */
 }
-.tpick__c {
-  position: relative; aspect-ratio: 2 / 3; border-radius: 8px;
-  border: 1px solid var(--line); background: var(--glass);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; padding: 0;
+.tfan__c {
+  position: absolute; top: 14px; left: 50%;
+  margin-left: calc(var(--card-w) / -2);
+  width: var(--card-w); aspect-ratio: 2 / 3;
+  border-radius: 7px; padding: 0; cursor: pointer;
+  border: 1px solid rgba(233,200,119,.3);
+  /* 牌背：細直紋，跟一般塔羅牌背的感覺一致 */
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(233,200,119,.18) 0 2px, rgba(9,14,26,.96) 2px 5px),
+    var(--glass);
+  box-shadow: 0 3px 10px rgba(0,0,0,.45);
+  display: flex; align-items: flex-end; justify-content: center;
+  transform-origin: 50% var(--pivot);
+  transform: rotate(var(--deg));
   transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease),
-              background var(--dur) var(--ease);
+              box-shadow var(--dur) var(--ease);
 }
-.tpick__c:hover { transform: translateY(-4px); border-color: var(--line-gold); }
-.tpick__mark { font-size: 15px; color: var(--gold); opacity: .3; }
-.tpick__c--on {
-  border-color: var(--gold); background: rgba(233,200,119,.16);
-  transform: translateY(-6px);
-  box-shadow: 0 6px 18px rgba(0,0,0,.45);
+.tfan__c:hover {
+  transform: rotate(var(--deg)) translateY(-16px);
+  border-color: var(--gold);
+  box-shadow: 0 12px 28px rgba(0,0,0,.6);
+  z-index: 99 !important;
 }
-.tpick__c--on .tpick__mark { opacity: .85; }
-.tpick__no {
-  position: absolute; top: -6px; right: -6px;
-  width: 19px; height: 19px; border-radius: 50%;
+.tfan__mark { font-size: 11px; color: var(--gold); opacity: .3; margin-bottom: 5px; }
+.tfan__c--on {
+  transform: rotate(var(--deg)) translateY(-30px);
+  border-color: var(--gold);
+  box-shadow: 0 14px 32px rgba(0,0,0,.65), 0 0 0 1px var(--gold) inset;
+  z-index: 98 !important;
+}
+.tfan__c--on .tfan__mark { opacity: .95; }
+.tfan__no {
+  position: absolute; top: -9px; left: 50%; margin-left: -10px;
+  width: 20px; height: 20px; border-radius: 50%;
   background: var(--gold); color: #14100a;
-  font-size: 11px; font-weight: 700; line-height: 19px; text-align: center;
+  font-size: 11px; font-weight: 700; line-height: 20px; text-align: center;
+}
+@media (max-width: 479px) {
+  .tfan { --card-w: 44px; --pivot: 200px; height: 178px; }
 }
 
 /* 等著被翻開的三張 */
 .tcard__back--wait { opacity: .55; }
 
-/* 解牌報告：長文，所以行距放寬，段落之間用線分開而不是再包一層卡片 */
-.report { margin-top: 6px; }
-.report__lead {
-  font-size: 14.5px; line-height: 2; color: var(--ink);
-  margin: 0 0 20px; padding-bottom: 18px; border-bottom: 1px solid var(--line);
+/* 抽牌前的三條使用說明 */
+.rules { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.rules > div { display: flex; gap: 10px; margin-bottom: 10px; }
+.rules > div:last-child { margin-bottom: 0; }
+.rules b {
+  flex: 0 0 auto; width: 98px; font-size: 11.5px; color: var(--gold);
+  line-height: 1.75;
 }
-.report__card { margin: 0 0 20px; }
-.report__slot {
-  font-size: 10.5px; letter-spacing: .12em; color: var(--gold); margin-bottom: 4px;
+.rules p { margin: 0; font-size: 12px; line-height: 1.85; color: var(--ink-faint); }
+@media (max-width: 479px) {
+  .rules > div { flex-direction: column; gap: 2px; }
+  .rules b { width: auto; }
 }
-.report__card h3, .report__block h3 {
-  font-size: 16px; margin: 0 0 8px; letter-spacing: .02em;
+
+/* 解牌報告：一篇散文。標題像一句詩，內文放寬行距讓它讀得下去。 */
+.report {
+  margin-top: 18px; padding: 22px 20px 20px;
+  border-radius: var(--r-md); border: 1px solid var(--line-gold);
+  background: linear-gradient(180deg, rgba(233,200,119,.05), rgba(255,255,255,.015));
 }
-.report__card p, .report__block p {
-  margin: 0; font-size: 14px; line-height: 2; color: var(--ink-soft);
+.report__cards {
+  display: flex; justify-content: center; gap: 12px; margin-bottom: 18px;
 }
-.report__block {
-  margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line);
+.rcard {
+  flex: 0 0 auto; width: 84px; text-align: center;
+  border: 1px solid var(--line-gold); border-radius: 9px;
+  padding: 12px 6px 9px; background: rgba(7,11,20,.55);
 }
-.report__block--gold h3 { color: var(--gold); }
-.report__ask {
-  margin-top: 20px; padding: 14px 16px; border-radius: var(--r-sm);
-  border: 1px solid var(--line-gold); background: rgba(233,200,119,.07);
+.rcard__glyph { font-size: 24px; color: var(--gold); line-height: 1.1; }
+.rcard b { display: block; font-size: 12.5px; margin-top: 6px; }
+.rcard small { display: block; font-size: 9.5px; color: var(--ink-faint); margin-top: 2px; }
+
+.report__head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line); margin-bottom: 14px;
 }
-.report__ask b { display: block; font-size: 10.5px; letter-spacing: .12em; color: var(--gold); }
-.report__ask p { margin: 6px 0 0; font-size: 14.5px; line-height: 1.9; color: var(--ink); }
+.report__date { font-size: 12px; color: var(--ink-faint); letter-spacing: .1em; }
+.report__src { font-size: 10.5px; color: var(--gold); letter-spacing: .1em; }
+
+.report__title {
+  font-size: 19px; line-height: 1.75; margin: 6px 0 18px;
+  color: var(--gold); letter-spacing: .02em;
+}
+.report__body p {
+  margin: 0 0 18px; font-size: 14.5px; line-height: 2.15; color: var(--ink-soft);
+  text-align: justify;
+}
+.report__body p:last-child { margin-bottom: 0; }
+.report__note {
+  margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--line);
+  font-size: 11.5px; line-height: 1.9; color: var(--ink-faint);
+}
+@media (max-width: 479px) {
+  .report { padding: 18px 15px 16px; }
+  .report__title { font-size: 17px; }
+  .report__body p { font-size: 14px; line-height: 2.05; }
+  .rcard { width: 72px; }
+}
 
 /* 導覽列：窄螢幕只放得下短的那個 */
 .nav__long { display: none; }

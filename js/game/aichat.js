@@ -244,71 +244,49 @@
    * 織成一份讀得下去的長文（每張牌都有自己的位置與轉折句）。
    */
   function offlineTarot(question, cards) {
-    var POS_INTRO = [
-      "第一張在「你帶著什麼」。這個位置講的不是過去發生的事，而是你到現在還沒放下、" +
-        "一直帶在身上的那個東西。",
-      "第二張在「你正在面對」。這是你現在真正卡住的地方——通常也是你最不想承認的那一塊。",
-      "第三張在「你可以練習」。它不是保證，是一個方向：如果你要往前，先練這一件事。"
-    ];
-
     var q = String(question || "").trim();
+    var c0 = cards[0], c1 = cards[1], c2 = cards[2];
 
-    var opening = (q
-        ? "你問的是：「" + q + "」\n\n" +
-          "這三張牌不會告訴你「要」或「不要」——如果它們能決定，你也不會拿來問。" +
-          "它們能做的是把你這個問題拆開，讓你看見自己其實卡在哪一段。"
-        : "你沒有寫特定的問題，那就讓牌先開口。" +
-          "有時候先看見自己在意什麼，問題才會浮出來。") +
-      "\n\n下面三張照「你帶著什麼、你正在面對、你可以練習」的順序讀。" +
-      "讀的時候不要急著對號入座，先問自己：這一段有沒有哪一句讓我不太舒服？" +
-      "會讓你不舒服的那一句，通常就是要看的那一句。";
+    var title = "從「" + c0.theme + "」走到「" + c2.theme + "」的這一段路";
 
-    var out = cards.map(function (c, i) {
-      var text =
-        POS_INTRO[i] + "\n\n" +
-        "你抽到的是「" + c.name + "」" + (c.rev ? "逆位" : "正位") +
-          "，主題是「" + c.theme + "」。\n\n" +
-        c.meaning + "\n\n" +
-        "這張牌對應的生命課題是：" + c.lesson + "\n" +
-        "放到高中生活裡，它可能長這樣——" + c.life + "\n\n" +
-        (q ? "把它接回你的問題：如果「" + c.theme + "」正是你這件事的關鍵，那你現在的做法，" +
-             "是在處理它，還是在繞過它？\n\n" : "") +
-        "它問你：" + c.ask;
+    var past =
+      "回顧過往，" + c0.name + (c0.rev ? "逆位" : "正位") + "落在「過去」這個位置，" +
+      "說的是你一路帶到今天的那個東西——「" + c0.theme + "」。\n\n" +
+      c0.meaning + "\n\n" +
+      "它對應的課題是：" + c0.lesson + "　放進高中生活裡，它常常長這樣——" + c0.life +
+      "　你未必記得它從哪一天開始，但它已經變成你面對事情的預設反應了。";
 
-      return {
-        position: c.slot,
-        cardName: c.name + "（" + (c.rev ? "逆位" : "正位") + "）",
-        text: text
-      };
-    });
+    var present =
+      "來到現在，" + c1.name + (c1.rev ? "逆位" : "正位") + "指出你此刻真正卡住的地方：「" +
+      c1.theme + "」。\n\n" + c1.meaning + "\n\n" +
+      (q ? "回到你問的「" + q + "」——這張牌沒有要替你回答要或不要。" +
+           "它在問的是：你現在的猶豫，是因為還沒想清楚，還是因為你已經知道答案、只是不想承認？\n\n"
+         : "") +
+      "這個位置的提醒是：" + c1.lesson;
 
-    var themes = cards.map(function (c) { return "「" + c.theme + "」"; }).join("、");
+    var future =
+      "往前看，" + c2.name + (c2.rev ? "逆位" : "正位") + "談的是「" + c2.theme + "」。" +
+      "這不是預告會發生什麼事，而是一個考驗：如果你要往前，這件事就是你要練的。\n\n" +
+      c2.meaning + "\n\n" +
+      "它的課題是：" + c2.lesson + "　你可以先從一件小事開始——" + c2.life +
+      "　這種事不會一次到位，但做過一次跟沒做過，差別很大。";
 
-    var together =
-      "三張的主題依序是" + themes + "。把它們連成一句話讀讀看：" +
-      "你帶著" + cards[0].theme + "，正在面對" + cards[1].theme + "，" +
-      "而牌要你練習的是" + cards[2].theme + "。\n\n" +
-      "這條線裡通常有一個張力——第一張跟第三張常常是反的。" +
-      "你習慣的那一套（第一張）在現在這件事上不夠用了，所以第二張才會卡住；" +
-      "第三張不是要你變成別人，是要你在原本的基礎上多練一項。\n\n" +
-      "三張擺在一起，哪一張最讓你不舒服？為什麼是它？" +
-      "最不想面對的那一張，通常就是這次真正要看的那一張。";
-
-    var advice =
-      "從上面三個「它問你」裡，挑你最不想回答的那一句，今天之內回答它。" +
-      "不用回答得漂亮，寫三行就好，或者找一個人說出來。\n\n" +
-      (q ? "另外，針對你問的那件事，先不要急著做決定。" +
-           "把它拆成兩個問題：一個是「我真正想要的是什麼」，" +
-           "一個是「我在怕什麼」。這兩題答完，決定通常自己就會出現。\n\n" : "") +
-      "牌只負責把問題攤開，決定還是你自己做。";
+    var summary =
+      "總結來說，這三張連起來是一條線：你帶著「" + c0.theme + "」走到今天，" +
+      "現在卡在「" + c1.theme + "」，而牌指的方向是「" + c2.theme + "」。\n\n" +
+      "第一張與第三張常常是相反的——你原本那一套在這件事上不夠用了，" +
+      "所以中間那張才會卡住。這不代表你哪裡做錯，只代表你走到了需要多學一項的位置。\n\n" +
+      "三張擺在一起，哪一張最讓你不舒服？那一張通常就是這次真正要看的。" +
+      "願你在想清楚之前，先對自己有點耐心。";
 
     return {
       offline: true,
-      opening: opening,
-      cards: out,
-      together: together,
-      advice: advice,
-      ask: cards[1] ? cards[1].ask : ""
+      title: title,
+      past: past,
+      present: present,
+      future: future,
+      summary: summary,
+      ask: c1 ? c1.ask : ""
     };
   }
 
@@ -381,13 +359,14 @@
         question: question || "",
         cards: cards
       }).then(function (data) {
-        if (!data.opening || !data.cards) throw new Error("BAD_SHAPE");
+        if (!data.title || !data.present) throw new Error("BAD_SHAPE");
         return {
           offline: false,
-          opening: data.opening,
-          cards: data.cards,
-          together: data.together || "",
-          advice: data.advice || "",
+          title: data.title,
+          past: data.past || "",
+          present: data.present,
+          future: data.future || "",
+          summary: data.summary || "",
           ask: data.ask || ""
         };
       }).catch(function () {

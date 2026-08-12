@@ -20,7 +20,7 @@
 
   var REV_RATE = 0.4;            // 逆位機率
   var NEED = 3;                  // 要選幾張
-  var SLOTS = ["你帶著什麼", "你正在面對", "你可以練習"];
+  var SLOTS = ["過去", "現在", "未來"];
 
   /* view.deck 是這一輪洗好的牌（22 張的順序），chosen 是玩家點的位置 */
   var view = { question: "", deck: [], chosen: [], cards: [], report: null, busy: false };
@@ -36,9 +36,15 @@
       '<div class="sect"><h2>塔羅・心象牌</h2><small>大阿爾克那 22 張</small></div>' +
 
       '<div class="card">' +
-        '<p class="card__note">這些牌不會告訴你未來會發生什麼。' +
-        "牌面是一個曖昧的意象，你在解釋它的時候，其實是在說自己的事。<br><br>" +
-        "先把心裡的問題寫下來——寫得越具體，解出來的東西越像你的事。</p>" +
+        '<p class="card__note">先把心裡的問題寫下來——寫得越具體，解出來的東西越像你的事。</p>' +
+        '<div class="rules">' +
+          '<div><b>牌是隨機的</b><p>洗好之後由你自己挑。同一個問題再問一次，' +
+            "抽到的牌會不一樣，所以它不是預言。</p></div>" +
+          '<div><b>解讀是電腦寫的</b><p>電腦把你的問題跟抽到的牌兜在一起，' +
+            "寫成一段話。它是娛樂與自我對話的工具，不是答案。</p></div>" +
+          '<div><b>決定還是你自己做</b><p>電腦不知道你的真實處境。' +
+            "真的很困擾的事，請找懂你狀況的人談——家人、朋友，或學校的輔導老師。</p></div>" +
+        "</div>" +
       "</div>" +
 
       '<div class="card card--gold" style="margin-top:14px">' +
@@ -96,10 +102,15 @@
         "牌已經洗好蓋起來了。不用想哪一張比較好——" +
         "<span style=\"color:var(--ink-faint)\">你伸手的那一下，就是這副牌要問你的第一個問題。</span></p>" +
 
-      '<div class="tpick">' +
+      /* 排成扇形。角度由 index 對稱分佈，中間那張立正、兩側往外傾。 */
+      '<div class="tfan">' +
         view.deck.map(function (c, i) {
-          return '<button type="button" class="tpick__c" data-pick="' + i + '">' +
-            '<span class="tpick__mark">✦</span></button>';
+          // 整個扇面固定張開 76 度，張數再多也不會超出畫面
+          var mid = (view.deck.length - 1) / 2;
+          var deg = view.deck.length > 1 ? (i - mid) * (76 / (view.deck.length - 1)) : 0;
+          return '<button type="button" class="tfan__c" data-pick="' + i + '" ' +
+            'style="--deg:' + deg.toFixed(2) + "deg;z-index:" + i + '">' +
+            '<span class="tfan__mark">✦</span></button>';
         }).join("") +
       "</div>" +
 
@@ -117,17 +128,17 @@
 
         if (at !== -1) {                       // 再點一次取消
           view.chosen.splice(at, 1);
-          b.classList.remove("tpick__c--on");
-          b.querySelector(".tpick__no") && b.querySelector(".tpick__no").remove();
+          b.classList.remove("tfan__c--on");
+          b.querySelector(".tfan__no") && b.querySelector(".tfan__no").remove();
         } else {
           if (view.chosen.length >= NEED) {
             LQ.ui.modal.toast("已經選滿三張了", true);
             return;
           }
           view.chosen.push(i);
-          b.classList.add("tpick__c--on");
+          b.classList.add("tfan__c--on");
           var tag = document.createElement("span");
-          tag.className = "tpick__no";
+          tag.className = "tfan__no";
           tag.textContent = view.chosen.length;
           b.appendChild(tag);
         }
@@ -162,7 +173,7 @@
 
     // 取消之後，後面的編號要往前遞補
     document.querySelectorAll("[data-pick]").forEach(function (b) {
-      var tag = b.querySelector(".tpick__no");
+      var tag = b.querySelector(".tfan__no");
       if (!tag) return;
       tag.textContent = view.chosen.indexOf(Number(b.dataset.pick)) + 1;
     });
@@ -279,44 +290,79 @@
     });
   }
 
+  /**
+   * 解牌報告。刻意寫成一篇有標題的散文，而不是一格一格的卡片——
+   * 三張牌要讀成一條線（回顧過往 → 來到現在 → 往前看 → 收尾），
+   * 分格會把那條線切斷。
+   */
   function renderReport(r) {
     var after = document.getElementById("tarot-after");
     if (!after) return;
 
-    var html =
-      '<div class="sect" style="margin-top:22px"><h2>解牌報告</h2><small>' +
-        (r.offline ? "離線版" : "AI 解牌") + "</small></div>" +
+    var d = String(LQ.state.today()).split("-");
+    var stamp = d.length === 3 ? d[0] + " / " + d[1] + " / " + d[2] : "";
 
+    var names = view.cards.map(function (c, i) {
+      var card = LQ.data.tarotById(c.n);
+      return '<div class="rcard">' +
+          '<div class="rcard__glyph"' + (c.rev ? ' style="transform:rotate(180deg)"' : "") + ">" +
+            esc(card.glyph) + "</div>" +
+          "<b>" + esc(card.name) + "</b>" +
+          "<small>" + esc(SLOTS[i]) + "・" + (c.rev ? "逆位" : "正位") + "</small>" +
+        "</div>";
+    }).join("");
+
+    var para = function (t) {
+      return t ? "<p>" + nl2br(esc(t)) + "</p>" : "";
+    };
+
+    after.innerHTML =
       '<div class="report">' +
+        '<div class="report__cards">' + names + "</div>" +
+
+        '<div class="report__head">' +
+          '<span class="report__date">' + esc(stamp) + "</span>" +
+          '<span class="report__src">' + (r.offline ? "離線版解讀" : "AI 解讀") + "</span>" +
+        "</div>" +
+
         (view.question
-          ? '<div class="tq"><span>你問的是</span><b>' + esc(view.question) + "</b></div>"
+          ? '<div class="tq"><span>你的問題</span><b>' + esc(view.question) + "</b></div>"
           : "") +
 
-        '<p class="report__lead">' + nl2br(esc(r.opening)) + "</p>" +
+        '<h2 class="report__title">' + esc(r.title || "三張牌的話") + "</h2>" +
 
-        (r.cards || []).map(function (c, i) {
-          return '<div class="report__card">' +
-            '<div class="report__slot">' + esc(c.position || SLOTS[i]) + "</div>" +
-            "<h3>" + esc(c.cardName || "") + "</h3>" +
-            "<p>" + nl2br(esc(c.text || "")) + "</p>" +
-          "</div>";
-        }).join("") +
+        '<div class="report__body">' +
+          para(r.past) + para(r.present) + para(r.future) + para(r.summary) +
+        "</div>" +
 
-        '<div class="report__block"><h3>三張合起來</h3><p>' +
-          nl2br(esc(r.together || "")) + "</p></div>" +
+        '<div style="display:flex;gap:8px;margin-top:18px">' +
+          '<button type="button" class="btn btn--ghost btn--sm" id="tr-redo" style="flex:1">' +
+            "重新解讀</button>" +
+          '<button type="button" class="btn btn--ghost btn--sm" id="tr-newq">換一個問題</button>' +
+        "</div>" +
 
-        '<div class="report__block report__block--gold"><h3>可以做的一件事</h3><p>' +
-          nl2br(esc(r.advice || "")) + "</p></div>" +
-
-        (r.ask ? '<div class="report__ask"><b>最後，它問你</b><p>' + esc(r.ask) + "</p></div>" : "") +
-      "</div>";
-
-    after.innerHTML = html + '<div id="tarot-reflect"></div>';
+        '<p class="report__note">解牌是娛樂與自我對話的工具，不是預言，也沒辦法考量你真實的處境。' +
+          "真的要做決定的時候，請找懂你狀況的人談。</p>" +
+      "</div>" +
+      '<div id="tarot-reflect"></div>';
 
     var q = r.ask || "讀完這三張牌，你最想記住哪一句？";
     document.getElementById("tarot-reflect").innerHTML =
       LQ.ui.oracle.reflectHTML(q, "寫給自己看的，不用給任何人交代。");
     LQ.ui.oracle.bindReflect("心象牌・三張", q, function () { LQ.go("oracle"); });
+
+    // 同一組牌重新解一次（牌不變，換一種讀法）
+    document.getElementById("tr-redo").addEventListener("click", function () {
+      LQ.audio.tap();
+      view.report = null;
+      showReportButton();
+      document.getElementById("tr-report").click();
+    });
+    document.getElementById("tr-newq").addEventListener("click", function () {
+      LQ.audio.tap();
+      reset();
+      renderAsk();
+    });
 
     LQ.audio.good();
     var el = document.querySelector(".report");
