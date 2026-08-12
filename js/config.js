@@ -28,14 +28,18 @@
          "file"    播 file 指定的音檔（推薦：離線可用、沒廣告、無版權疑慮）
          "youtube" 嵌入 YouTube 播放器播 youtubeId 這支影片
 
-       ※ 目前填的 BXsWn9DhF5g 是 John Williams〈Welcome To Jurassic Park〉，
-         是受著作權保護的商業電影配樂。用 "youtube" 模式等於嵌入 YouTube 的
-         播放器（版權由 YouTube 那邊處理），但需要網路、可能出現廣告。
-         若要離線且完全沒有版權疑慮，請改用 "file" 模式，
-         放一首你有權使用的曲子到 assets/audio/bgm.mp3。
+       目前是 "file" 模式，但 assets/audio/bgm.mp3 還沒放進去，
+       所以現在是**沒有背景音樂**的狀態——找不到檔案時 js/bgm.js 只會在
+       console 印一行提示，畫面不受影響。把一首你有權使用的曲子命名成
+       bgm.mp3 丟進 assets/audio/，重新整理就會自己播。
+
+       ※ youtubeId 這支 BXsWn9DhF5g 是 John Williams〈Welcome To Jurassic
+         Park〉，受著作權保護的商業電影配樂。網站已經公開上線，以泰宇出版
+         名義發布的教學網站不適合公開嵌這個，所以不要把 mode 改回
+         "youtube"，除非換成你有授權的曲子。
        --------------------------------------------------------------- */
     music: {
-      mode: "youtube",
+      mode: "file",
       youtubeId: "BXsWn9DhF5g",
       file: "assets/audio/bgm.mp3",
       volume: 0.4

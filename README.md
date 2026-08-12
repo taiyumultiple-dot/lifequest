@@ -57,7 +57,14 @@ python -m http.server 8811
 
 然後開 <http://localhost:8811>。
 
-**要上線**：整個資料夾丟到 Netlify 或 GitHub Pages 就好，沒有任何建置步驟。
+**線上版**：
+
+| 網址 | 說明 |
+|---|---|
+| <https://taiyumultiple-dot.github.io/lifequest/> | 遊戲自己的網站，可以安裝成 App、離線遊玩 |
+| <https://taiyumultiple-dot.github.io/0811--/> | 台語學習平台，遊戲收在裡面 |
+
+推 `main` 就會自動重新部署（`.github/workflows/deploy-pages.yml`），沒有任何建置步驟。
 
 ---
 
@@ -80,7 +87,8 @@ python -m http.server 8811
 | `js/data/titles.js` | 稱號 |
 | `css/tokens.css` | 全站配色與字級 |
 
-> 改完如果網頁沒更新，把 `index.html` 裡的 `?v=1` 改成 `?v=2`（瀏覽器快取用的版本號）。
+> 改完如果網頁沒更新，把 `index.html` 裡的 `?v=` 版本號全部 +1（目前是 `?v=22`），
+> 順便把 `sw.js` 最上面的 `CACHE` 版本號也 +1。這兩個是瀏覽器與離線快取用的。
 
 ### 方法二：載入內容包
 
@@ -118,9 +126,14 @@ python tools/contact_sheet.py <資料夾> <輸出.png> [起始編號] [張數]
 
 ## 資料與隱私
 
-- 全部資料存在瀏覽器的 `localStorage`（鍵：`lifequest_save_v1`），**不需要登入，不會上傳到任何地方**。
-- 學生寫的反思內容也只存在自己的裝置上。
-- 設定頁可以匯出／匯入存檔，或一鍵刪除全部資料。
+- **預設不需要登入**，進度存在瀏覽器的 `localStorage`（鍵：`lifequest_save_v1`），
+  不會上傳到任何地方。學生寫的反思內容也只在自己的裝置上。
+- 選擇用 Google 帳號登入之後，進度才會同步到 Supabase（換手機、換電腦都接得回來）。
+  資料表開了 RLS，每個人只讀寫得到自己那一列。要不要登入是玩家自己決定的，
+  登入畫面永遠有「先不登入，直接開始」。
+- 設定頁可以匯出／匯入存檔、隨時登出，或一鍵刪除全部資料。
+
+> Google 登入目前**還沒開通**，細節與開通步驟見 `GOOGLE登入設定.md`。
 
 ## 安全提醒
 
