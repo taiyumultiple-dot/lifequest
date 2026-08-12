@@ -1,16 +1,17 @@
 /* ==========================================================================
    塔羅・心象牌（AI 解牌）
    ---------------------------------------------------------------------------
-   流程：寫下你的問題 → 從整副牌裡挑三張 → 翻開 → 看完整的解牌報告。
+   流程：寫下你的問題 → 從整副 78 張裡挑三張 → 翻開 → 看完整的解牌報告。
 
-   三個位置沿用原本「三張・走過的路」的講法：
-     你帶著什麼 / 你正在面對 / 你可以練習
-   刻意不是「過去現在未來」——這副牌不預測未來，牌面是曖昧的意象，
-   玩家在解釋它的時候其實是在說自己的事。報告的提示詞也照這個規矩寫。
+   牌組：大阿爾克那 22 張（js/data/tarot.js）＋ 小阿爾克那 56 張
+   （js/data/tarot-minor.js），三個位置是過去／現在／未來。
 
-   報告由 AI 產生，素材是 js/data/tarot.js 裡那 22 張牌自己的欄位
-   （theme / upright / reversed / lesson / ask / life），不是去外面抓來的。
-   連不到 AI 時會用本機版本，內容比較短但不會壞掉。
+   報告結構刻意做成「先逐張分析、再綜合結論、最後建議」：
+     1. 牌面解讀分析 —— 每張牌先講牌義，再回答「這對你問的事代表什麼」
+     2. 綜合結論 —— 直接回答問題本身
+     3. 建議與指引 —— 把注意力帶回使用者可以掌握的部分
+   素材是牌本身的欄位，由 AI 結合使用者的問題重寫；
+   連不到 AI 時走本機版本，內容比較短但不會壞掉。
    ========================================================================== */
 (function (LQ) {
   "use strict";
@@ -33,7 +34,7 @@
 
   function renderAsk() {
     LQ.render(
-      '<div class="sect"><h2>塔羅・心象牌</h2><small>大阿爾克那 22 張</small></div>' +
+      '<div class="sect"><h2>塔羅・心象牌</h2><small>完整 78 張</small></div>' +
 
       '<div class="card">' +
         '<p class="card__note">先把心裡的問題寫下來——寫得越具體，解出來的東西越像你的事。</p>' +
@@ -81,9 +82,10 @@
   /* ---- 2. 選三張 ---------------------------------------------------- */
 
   function shuffle() {
-    var idx = LQ.oracle.pickRandom(LQ.data.tarot.length, LQ.data.tarot.length);
+    var all = LQ.data.tarotFull();          // 78 張：大阿爾克那 22 ＋ 小阿爾克那 56
+    var idx = LQ.oracle.pickRandom(all.length, all.length);
     view.deck = idx.map(function (i) {
-      return { n: LQ.data.tarot[i].n, rev: Math.random() < REV_RATE };
+      return { n: all[i].n, rev: Math.random() < REV_RATE };
     });
     view.chosen = [];
     view.cards = [];
@@ -228,7 +230,7 @@
 
   function frontFace(i) {
     var c = view.cards[i];
-    var card = LQ.data.tarotById(c.n);
+    var card = LQ.data.tarotAnyById(c.n);
     if (!card) return '<div class="tcard__face">這張牌讀不到，抱歉。</div>';
 
     return '<div class="tcard__face">' +
@@ -273,12 +275,13 @@
         "</div>";
 
       var payload = view.cards.map(function (c, i) {
-        var card = LQ.data.tarotById(c.n);
+        var card = LQ.data.tarotAnyById(c.n);
         return {
           slot: SLOTS[i],
           name: card.name, en: card.en, rev: c.rev, theme: card.theme,
           meaning: c.rev ? card.reversed : card.upright,
-          lesson: card.lesson, ask: card.ask, life: card.life
+          uprightRef: card.upright,          // 讓 AI 能寫「正位代表…，逆位則…」
+          lesson: card.lesson || "", ask: card.ask || "", life: card.life || ""
         };
       });
 
@@ -291,9 +294,10 @@
   }
 
   /**
-   * 解牌報告。刻意寫成一篇有標題的散文，而不是一格一格的卡片——
-   * 三張牌要讀成一條線（回顧過往 → 來到現在 → 往前看 → 收尾），
-   * 分格會把那條線切斷。
+   * 解牌報告。三段式：
+   *   1. 牌面解讀分析 —— 每張牌先講牌義，再回答「這對你問的事代表什麼」
+   *   2. 綜合結論 —— 直接回答問題本身
+   *   3. 建議與指引 —— 把注意力帶回使用者能掌握的部分
    */
   function renderReport(r) {
     var after = document.getElementById("tarot-after");
@@ -303,7 +307,7 @@
     var stamp = d.length === 3 ? d[0] + " / " + d[1] + " / " + d[2] : "";
 
     var names = view.cards.map(function (c, i) {
-      var card = LQ.data.tarotById(c.n);
+      var card = LQ.data.tarotAnyById(c.n);
       return '<div class="rcard">' +
           '<div class="rcard__glyph"' + (c.rev ? ' style="transform:rotate(180deg)"' : "") + ">" +
             esc(card.glyph) + "</div>" +
@@ -315,6 +319,25 @@
     var para = function (t) {
       return t ? "<p>" + nl2br(esc(t)) + "</p>" : "";
     };
+
+    var cardBlocks = (r.cards || []).map(function (c, i) {
+      var raw = view.cards[i];
+      var card = raw ? LQ.data.tarotAnyById(raw.n) : null;
+      var fallbackName = card
+        ? card.name + (raw.rev ? "逆位" : "正位") + "（" + (raw.rev ? "Reversed " : "") + card.en + "）"
+        : "";
+      return '<div class="rblock">' +
+          '<h4 class="rblock__name">' + esc(c.cardName || fallbackName) + "</h4>" +
+          (c.aspect
+            ? '<div class="rblock__row"><b>' + esc(c.aspect) + "</b><p>" +
+                nl2br(esc(c.general || "")) + "</p></div>"
+            : para(c.general)) +
+          (c.applied
+            ? '<div class="rblock__row"><b>' + esc(c.appliedLabel || "對你問的事") + "</b><p>" +
+                nl2br(esc(c.applied)) + "</p></div>"
+            : "") +
+        "</div>";
+    }).join("");
 
     after.innerHTML =
       '<div class="report">' +
@@ -329,11 +352,16 @@
           ? '<div class="tq"><span>你的問題</span><b>' + esc(view.question) + "</b></div>"
           : "") +
 
-        '<h2 class="report__title">' + esc(r.title || "三張牌的話") + "</h2>" +
+        '<div class="report__body">' + para(r.opening) + "</div>" +
 
-        '<div class="report__body">' +
-          para(r.past) + para(r.present) + para(r.future) + para(r.summary) +
-        "</div>" +
+        '<h3 class="report__h">1. 牌面解讀分析</h3>' +
+        cardBlocks +
+
+        '<h3 class="report__h">2. 綜合結論</h3>' +
+        '<div class="report__body">' + para(r.conclusion) + "</div>" +
+
+        '<h3 class="report__h">3. 建議與指引</h3>' +
+        '<div class="report__body report__body--gold">' + para(r.advice) + "</div>" +
 
         '<div style="display:flex;gap:8px;margin-top:18px">' +
           '<button type="button" class="btn btn--ghost btn--sm" id="tr-redo" style="flex:1">' +

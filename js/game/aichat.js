@@ -245,48 +245,62 @@
    */
   function offlineTarot(question, cards) {
     var q = String(question || "").trim();
-    var c0 = cards[0], c1 = cards[1], c2 = cards[2];
+    var POS_ASPECT = ["起點與來路", "此刻的狀態", "接下來的考驗"];
+    var POS_APPLY = ["這對你問的事代表什麼", "現在的實際狀況", "往前走要注意什麼"];
 
-    var title = "從「" + c0.theme + "」走到「" + c2.theme + "」的這一段路";
+    var opening =
+      (q ? "針對你問的「" + q + "」，" : "沒有特定問題的情況下，") +
+      "三張牌分別落在過去、現在、未來三個位置。" +
+      "下面先一張一張看它們各自在說什麼，再把三張合起來回答你的問題。";
 
-    var past =
-      "回顧過往，" + c0.name + (c0.rev ? "逆位" : "正位") + "落在「過去」這個位置，" +
-      "說的是你一路帶到今天的那個東西——「" + c0.theme + "」。\n\n" +
-      c0.meaning + "\n\n" +
-      "它對應的課題是：" + c0.lesson + "　放進高中生活裡，它常常長這樣——" + c0.life +
-      "　你未必記得它從哪一天開始，但它已經變成你面對事情的預設反應了。";
+    var out = cards.map(function (c, i) {
+      return {
+        cardName: c.name + (c.rev ? "逆位" : "正位") +
+                  "（" + (c.rev ? "Reversed " : "") + c.en + "）",
+        aspect: POS_ASPECT[i] + "｜" + c.theme,
+        general: (c.rev
+            ? "正位的" + c.name + "代表：" + (c.uprightRef || c.meaning) +
+              "　逆位則轉向另一面——" + c.meaning
+            : c.meaning) +
+          (c.lesson ? "\n\n這張牌對應的課題是：" + c.lesson : ""),
+        appliedLabel: POS_APPLY[i],
+        applied: (q
+            ? "放在「" + q + "」這件事上，這張牌指的是「" + c.theme + "」這個面向。"
+            : "這張牌在這個位置指的是「" + c.theme + "」這個面向。") +
+          (i === 0 ? "它說的是你一路帶到今天的東西——未必記得從哪天開始，但已經變成你的預設反應。"
+           : i === 1 ? "它說的是你此刻真正卡住的地方，通常也是最不想承認的那一塊。"
+           : "它不是預告會發生什麼，而是如果你要往前，這件事就是要練的。") +
+          (c.life ? "　放進日常裡，它可能長這樣——" + c.life : "")
+      };
+    });
 
-    var present =
-      "來到現在，" + c1.name + (c1.rev ? "逆位" : "正位") + "指出你此刻真正卡住的地方：「" +
-      c1.theme + "」。\n\n" + c1.meaning + "\n\n" +
-      (q ? "回到你問的「" + q + "」——這張牌沒有要替你回答要或不要。" +
-           "它在問的是：你現在的猶豫，是因為還沒想清楚，還是因為你已經知道答案、只是不想承認？\n\n"
-         : "") +
-      "這個位置的提醒是：" + c1.lesson;
+    var themes = cards.map(function (c) { return "「" + c.theme + "」"; }).join("、");
 
-    var future =
-      "往前看，" + c2.name + (c2.rev ? "逆位" : "正位") + "談的是「" + c2.theme + "」。" +
-      "這不是預告會發生什麼事，而是一個考驗：如果你要往前，這件事就是你要練的。\n\n" +
-      c2.meaning + "\n\n" +
-      "它的課題是：" + c2.lesson + "　你可以先從一件小事開始——" + c2.life +
-      "　這種事不會一次到位，但做過一次跟沒做過，差別很大。";
+    var conclusion =
+      (q ? "回到你的問題——" : "把三張合起來看——") +
+      "三張的主題依序是" + themes + "。\n\n" +
+      "第一張與第三張常常是相反的：你原本那一套在這件事上已經不夠用，" +
+      "所以中間那張才會卡住。這不代表你哪裡做錯了，只代表你走到了需要多學一項的位置。\n\n" +
+      (q ? "牌沒辦法替你回答「是」或「不是」——如果它能決定，你也不會拿來問。" +
+           "它能做的是把這個問題拆開：你現在的猶豫，是因為還沒想清楚，" +
+           "還是因為你其實已經知道答案、只是不想承認？"
+         : "三張擺在一起，哪一張最讓你不舒服？那一張通常就是這次真正要看的。");
 
-    var summary =
-      "總結來說，這三張連起來是一條線：你帶著「" + c0.theme + "」走到今天，" +
-      "現在卡在「" + c1.theme + "」，而牌指的方向是「" + c2.theme + "」。\n\n" +
-      "第一張與第三張常常是相反的——你原本那一套在這件事上不夠用了，" +
-      "所以中間那張才會卡住。這不代表你哪裡做錯，只代表你走到了需要多學一項的位置。\n\n" +
-      "三張擺在一起，哪一張最讓你不舒服？那一張通常就是這次真正要看的。" +
-      "願你在想清楚之前，先對自己有點耐心。";
+    var advice =
+      "先做一件小的：把上面三張裡最讓你不舒服的那一句抄下來，" +
+      "然後寫三行回應它。不用寫得漂亮，寫得真實就好。\n\n" +
+      (q ? "另外，把你的問題拆成兩題分開回答——「我真正想要的是什麼」" +
+           "以及「我在怕什麼」。這兩題答完，決定通常自己就會浮出來。\n\n" : "") +
+      "最後一句實話：與其一直猜結果，不如把注意力收回到你自己能決定的事情上。" +
+      "那些事情不多，但每一件都真的動得了。";
 
     return {
       offline: true,
-      title: title,
-      past: past,
-      present: present,
-      future: future,
-      summary: summary,
-      ask: c1 ? c1.ask : ""
+      opening: opening,
+      cards: out,
+      conclusion: conclusion,
+      advice: advice,
+      ask: cards[1] ? cards[1].ask : ""
     };
   }
 
@@ -359,14 +373,13 @@
         question: question || "",
         cards: cards
       }).then(function (data) {
-        if (!data.title || !data.present) throw new Error("BAD_SHAPE");
+        if (!data.opening || !data.cards || !data.conclusion) throw new Error("BAD_SHAPE");
         return {
           offline: false,
-          title: data.title,
-          past: data.past || "",
-          present: data.present,
-          future: data.future || "",
-          summary: data.summary || "",
+          opening: data.opening,
+          cards: data.cards,
+          conclusion: data.conclusion,
+          advice: data.advice || "",
           ask: data.ask || ""
         };
       }).catch(function () {

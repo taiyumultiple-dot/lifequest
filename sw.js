@@ -8,7 +8,7 @@
 
    改版時把 CACHE 的版本號 +1，舊快取會自動被清掉。
    ========================================================================== */
-var CACHE = "lifequest-v19";
+var CACHE = "lifequest-v20";
 
 /* 安裝時先抓起來的核心檔案（少一兩支也不會讓安裝失敗）*/
 var CORE = [
@@ -26,6 +26,7 @@ var CORE = [
   "./js/data/daily-sets.js",
   "./js/data/units.js",
   "./js/data/tarot.js",
+  "./js/data/tarot-minor.js",
   "./js/data/psychtests.js",
   "./js/data/zodiac.js",
   "./js/data/values.js",
