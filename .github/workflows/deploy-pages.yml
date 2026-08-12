@@ -1,0 +1,46 @@
+name: Deploy to GitHub Pages
+
+# 純靜態網站，沒有任何建置步驟：checkout 之後直接把資料夾丟上 Pages。
+# 推 main 就會自動重新部署。
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同時只跑一個部署，後推的取代前一個
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # 這些是開發用的，留在 repo 裡就好，沒必要當成網頁檔案對外提供
+      - name: 清掉不需要上網站的東西
+        run: rm -rf .git .github tools
+
+      # enablement: true → 第一次跑就自動幫這個 repo 打開 GitHub Pages，
+      # 不必再手動去 Settings → Pages 設定
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
