@@ -97,6 +97,36 @@
     };
   }
 
+  /**
+   * 沒有 AI 時的解牌。不硬掰運勢，只是把每張牌本來就有的欄位
+   * 按位置排好，並老實說這是離線版。
+   */
+  function offlineTarot(question, cards) {
+    return {
+      offline: true,
+      opening: (question
+          ? "你問的是：「" + question + "」\n\n"
+          : "") +
+        "現在連不到 AI，所以這份報告是用每張牌自己的說明排出來的，" +
+        "沒有針對你的問題重寫。下面三段照「你帶著什麼、你正在面對、你可以練習」的順序讀，" +
+        "讀完再回頭看你的問題，通常就會知道自己卡在哪一段。",
+      cards: cards.map(function (c) {
+        return {
+          position: c.slot,
+          cardName: c.name + "（" + (c.rev ? "逆位" : "正位") + "）",
+          text: c.meaning + "\n\n生命課題：" + c.lesson +
+                "\n可能長這樣：" + c.life +
+                "\n\n它問你：" + c.ask
+        };
+      }),
+      together: "三張擺在一起，哪一張最讓你不舒服？為什麼是它？" +
+                "最不想面對的那一張，通常就是這次真正要看的那一張。",
+      advice: "挑上面三個「它問你」裡面最刺的那一句，今天之內回答它——" +
+              "寫下來也好，跟一個人說也好，做完一件小事也好。",
+      ask: ""
+    };
+  }
+
   function offlineReply(text) {
     var t = (text || "").trim();
     if (!t) return "你想從哪一件事開始說？";
@@ -161,6 +191,30 @@
         return out;
       }).catch(function () {
         return offlineHoroscope(z, date);
+      });
+    },
+
+    /**
+     * 塔羅解牌報告。cards 是三張牌的完整資料（含位置與牌義）。
+     * 失敗時回本機版：把三張牌自己的欄位串成一份短一點但誠實的報告。
+     */
+    tarot: function (question, cards) {
+      return post({
+        mode: "tarot",
+        question: question || "",
+        cards: cards
+      }).then(function (data) {
+        if (!data.opening || !data.cards) throw new Error("BAD_SHAPE");
+        return {
+          offline: false,
+          opening: data.opening,
+          cards: data.cards,
+          together: data.together || "",
+          advice: data.advice || "",
+          ask: data.ask || ""
+        };
+      }).catch(function () {
+        return offlineTarot(question, cards);
       });
     },
 

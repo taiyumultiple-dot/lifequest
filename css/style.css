@@ -621,6 +621,82 @@
 .zhero__cap b { font-size: 20px; letter-spacing: .04em; }
 .zhero__cap small { font-size: 11.5px; color: var(--ink-faint); }
 
+/* --- 塔羅：問題列 / 選牌 / 解牌報告 ---------------------------------- */
+
+/* 玩家寫的問題，之後每一頁都跟著，讓他知道現在在解的是這一題 */
+.tq {
+  border-left: 2px solid var(--line-gold); padding: 2px 0 2px 12px;
+  margin: 0 0 14px;
+}
+.tq span { display: block; font-size: 10.5px; letter-spacing: .12em; color: var(--gold); }
+.tq b { display: block; font-size: 14.5px; line-height: 1.8; margin-top: 3px; }
+
+/* 蓋著的整副牌。手機一排 5 張，桌機自己長更多 */
+.tpick {
+  display: grid; gap: 7px;
+  grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+}
+.tpick__c {
+  position: relative; aspect-ratio: 2 / 3; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--glass);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; padding: 0;
+  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease),
+              background var(--dur) var(--ease);
+}
+.tpick__c:hover { transform: translateY(-4px); border-color: var(--line-gold); }
+.tpick__mark { font-size: 15px; color: var(--gold); opacity: .3; }
+.tpick__c--on {
+  border-color: var(--gold); background: rgba(233,200,119,.16);
+  transform: translateY(-6px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.45);
+}
+.tpick__c--on .tpick__mark { opacity: .85; }
+.tpick__no {
+  position: absolute; top: -6px; right: -6px;
+  width: 19px; height: 19px; border-radius: 50%;
+  background: var(--gold); color: #14100a;
+  font-size: 11px; font-weight: 700; line-height: 19px; text-align: center;
+}
+
+/* 等著被翻開的三張 */
+.tcard__back--wait { opacity: .55; }
+
+/* 解牌報告：長文，所以行距放寬，段落之間用線分開而不是再包一層卡片 */
+.report { margin-top: 6px; }
+.report__lead {
+  font-size: 14.5px; line-height: 2; color: var(--ink);
+  margin: 0 0 20px; padding-bottom: 18px; border-bottom: 1px solid var(--line);
+}
+.report__card { margin: 0 0 20px; }
+.report__slot {
+  font-size: 10.5px; letter-spacing: .12em; color: var(--gold); margin-bottom: 4px;
+}
+.report__card h3, .report__block h3 {
+  font-size: 16px; margin: 0 0 8px; letter-spacing: .02em;
+}
+.report__card p, .report__block p {
+  margin: 0; font-size: 14px; line-height: 2; color: var(--ink-soft);
+}
+.report__block {
+  margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line);
+}
+.report__block--gold h3 { color: var(--gold); }
+.report__ask {
+  margin-top: 20px; padding: 14px 16px; border-radius: var(--r-sm);
+  border: 1px solid var(--line-gold); background: rgba(233,200,119,.07);
+}
+.report__ask b { display: block; font-size: 10.5px; letter-spacing: .12em; color: var(--gold); }
+.report__ask p { margin: 6px 0 0; font-size: 14.5px; line-height: 1.9; color: var(--ink); }
+
+/* 導覽列：窄螢幕只放得下短的那個 */
+.nav__long { display: none; }
+.nav__short { display: inline; }
+@media (min-width: 560px) {
+  .nav__long { display: inline; }
+  .nav__short { display: none; }
+}
+
 /* --- 今日運勢的日期列 ------------------------------------------------ */
 
 .zdate {

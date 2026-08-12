@@ -57,13 +57,14 @@
 
 <!-- 底部導覽 -->
 <!-- 五扇門排第一顆，因為它是進遊戲的第一頁。
-     補給站併進「每日」、塔羅與星座併回「心象」（它們本來就是它的子頁），
-     少掉兩顆重複的入口，剩下的每一顆才有足夠的寬度。 -->
+     補給站併進「每日」；第四顆直接進塔羅（心象探索的其他三樣工具
+     ——星座、自我探索測驗、價值羅盤——從塔羅頁底部那顆按鈕過去）。
+     窄螢幕顯示「塔羅牌」，寬螢幕才顯示完整的「塔羅・心象牌」。 -->
 <nav id="nav" class="nav" hidden>
   <button type="button" data-go="hub" class="nav__main"><i>⌘</i><span>五扇門</span></button>
   <button type="button" data-go="daily"><i>◷</i><span>每日</span></button>
   <button type="button" data-go="lessons"><i>▤</i><span>課本</span></button>
-  <button type="button" data-go="oracle"><i>✦</i><span>心象</span></button>
+  <button type="button" data-go="tarot"><i>✦</i><span class="nav__long">塔羅・心象牌</span><span class="nav__short">塔羅牌</span></button>
   <button type="button" data-go="character"><i>☾</i><span>人物</span></button>
   <button type="button" data-go="help"><i>?</i><span>說明</span></button>
   <button type="button" data-go="settings"><i>⚙</i><span>設定</span></button>
