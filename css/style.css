@@ -735,6 +735,13 @@
 .report__body p:last-child { margin-bottom: 0; }
 .report__body--gold p { color: var(--ink); }
 
+/* 換角度重讀時的標示 */
+.report__angle {
+  display: inline-block; margin: -8px 0 16px;
+  font-size: 11px; letter-spacing: .08em; color: var(--ink-faint);
+  padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line);
+}
+
 /* 三個大段落的標題 */
 .report__h {
   font-size: 15px; color: var(--gold); letter-spacing: .04em;

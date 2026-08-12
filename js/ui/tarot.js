@@ -23,11 +23,19 @@
   var NEED = 3;                  // 要選幾張
   var SLOTS = ["過去", "現在", "未來"];
 
-  /* view.deck 是這一輪洗好的牌（22 張的順序），chosen 是玩家點的位置 */
-  var view = { question: "", deck: [], chosen: [], cards: [], report: null, busy: false };
+  /* 「重新解讀」不是重抽，是換一個角度讀同一組牌。四種輪流換。 */
+  var ANGLES = [
+    { key: "default",  label: "三張牌的關係" },
+    { key: "other",    label: "從對方的角度" },
+    { key: "self",     label: "從你自己的狀態" },
+    { key: "timing",   label: "從時機與節奏" }
+  ];
+
+  /* view.deck 是這一輪洗好的牌，chosen 是玩家點的位置，variant 是解讀角度 */
+  var view = { question: "", deck: [], chosen: [], cards: [], report: null, busy: false, variant: 0 };
 
   function reset() {
-    view = { question: "", deck: [], chosen: [], cards: [], report: null, busy: false };
+    view = { question: "", deck: [], chosen: [], cards: [], report: null, busy: false, variant: 0 };
   }
 
   /* ---- 1. 寫下問題 -------------------------------------------------- */
@@ -228,6 +236,10 @@
     });
   }
 
+  /**
+   * 翻開的牌。這裡刻意只顯示「抽到什麼」——牌義與提問都留到解牌報告裡講，
+   * 免得同樣的內容在畫面上出現兩次。
+   */
   function frontFace(i) {
     var c = view.cards[i];
     var card = LQ.data.tarotAnyById(c.n);
@@ -243,8 +255,6 @@
           '<span class="tag' + (c.rev ? "" : " tag--gold") + '">' + (c.rev ? "逆位" : "正位") + "</span>" +
           '<span class="tag">' + esc(card.theme) + "</span>" +
         "</div>" +
-        '<p class="tcard__text">' + nl2br(c.rev ? card.reversed : card.upright) + "</p>" +
-        '<div class="tcard__ask"><b>它問你</b><p>' + esc(card.ask) + "</p></div>" +
       "</div>";
   }
 
@@ -285,7 +295,7 @@
         };
       });
 
-      LQ.ai.tarot(view.question, payload).then(function (r) {
+      LQ.ai.tarot(view.question, payload, ANGLES[view.variant % ANGLES.length].key).then(function (r) {
         view.busy = false;
         view.report = r;
         renderReport(r);
@@ -352,6 +362,13 @@
           ? '<div class="tq"><span>你的問題</span><b>' + esc(view.question) + "</b></div>"
           : "") +
 
+        '<h2 class="report__title">' + esc(r.title || "三張牌的話") + "</h2>" +
+
+        (view.variant % ANGLES.length !== 0
+          ? '<div class="report__angle">這一次的讀法：' +
+              esc(ANGLES[view.variant % ANGLES.length].label) + "</div>"
+          : "") +
+
         '<div class="report__body">' + para(r.opening) + "</div>" +
 
         '<h3 class="report__h">1. 牌面解讀分析</h3>' +
@@ -379,9 +396,13 @@
       LQ.ui.oracle.reflectHTML(q, "寫給自己看的，不用給任何人交代。");
     LQ.ui.oracle.bindReflect("心象牌・三張", q, function () { LQ.go("oracle"); });
 
-    // 同一組牌重新解一次（牌不變，換一種讀法）
-    document.getElementById("tr-redo").addEventListener("click", function () {
+    // 同一組牌換一個角度重讀（牌不變，換讀法）
+    var nextAngle = ANGLES[(view.variant + 1) % ANGLES.length];
+    var redo = document.getElementById("tr-redo");
+    redo.textContent = "換個角度再讀一次（" + nextAngle.label + "）";
+    redo.addEventListener("click", function () {
       LQ.audio.tap();
+      view.variant = (view.variant + 1) % ANGLES.length;
       view.report = null;
       showReportButton();
       document.getElementById("tr-report").click();

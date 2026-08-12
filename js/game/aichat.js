@@ -243,15 +243,51 @@
    * 沒有 AI 時的解牌。不硬掰預言，而是把三張牌的素材與玩家的問題
    * 織成一份讀得下去的長文（每張牌都有自己的位置與轉折句）。
    */
-  function offlineTarot(question, cards) {
+  /**
+   * 四種解讀角度。「重新解讀」會依序換一個，
+   * 所以同一組牌可以讀出四份不一樣的報告。
+   */
+  var ANGLE_TEXT = {
+    "default": {
+      title: function (a, c) { return "從「" + a + "」走到「" + c + "」的這一段路"; },
+      lead: "下面先一張一張看它們各自在說什麼，再把三張合起來回答你的問題。",
+      aspect: ["起點與來路", "此刻的狀態", "接下來的考驗"],
+      apply: ["這對你問的事代表什麼", "現在的實際狀況", "往前走要注意什麼"],
+      angle: ""
+    },
+    other: {
+      title: function (a, c) { return "如果換成對方的位置，這三張是這樣排的"; },
+      lead: "這一次換一個角度：把三張牌讀成「對方那一邊發生了什麼」。" +
+            "這不是讀心，是把牌面的可能性放到對方身上看一遍。",
+      aspect: ["對方帶著的", "對方現在的狀態", "對方要跨過的"],
+      apply: ["對方那邊可能是什麼樣子", "他此刻的處境", "他要面對的部分"],
+      angle: "從對方的角度讀。牌面反映的是可能性，不是事實。"
+    },
+    self: {
+      title: function (a, c) { return "先不管別人，這三張在說你自己"; },
+      lead: "這一次把焦點收回來：不看別人怎麼想，只看你自己的狀態與需求。",
+      aspect: ["你一直以來的模式", "你現在真正的感受", "你需要練的"],
+      apply: ["這對你自己代表什麼", "你此刻的狀態", "你可以為自己做的"],
+      angle: "把焦點放在提問者自己身上，不談別人怎麼想。"
+    },
+    timing: {
+      title: function (a, c) { return "什麼該現在做，什麼該再等一下"; },
+      lead: "這一次看的是節奏：哪些事已經到了時候，哪些事再等一下比較好。",
+      aspect: ["已經過去的階段", "現在這個階段", "還沒到的階段"],
+      apply: ["這一段已經完成了什麼", "現在適合做什麼", "什麼還不到時候"],
+      angle: "從時機與節奏讀：什麼該現在做、什麼該等。不要給具體日期。"
+    }
+  };
+
+  function offlineTarot(question, cards, angle) {
     var q = String(question || "").trim();
-    var POS_ASPECT = ["起點與來路", "此刻的狀態", "接下來的考驗"];
-    var POS_APPLY = ["這對你問的事代表什麼", "現在的實際狀況", "往前走要注意什麼"];
+    var A = ANGLE_TEXT[angle] || ANGLE_TEXT["default"];
+    var POS_ASPECT = A.aspect;
+    var POS_APPLY = A.apply;
 
     var opening =
       (q ? "針對你問的「" + q + "」，" : "沒有特定問題的情況下，") +
-      "三張牌分別落在過去、現在、未來三個位置。" +
-      "下面先一張一張看它們各自在說什麼，再把三張合起來回答你的問題。";
+      "三張牌分別落在過去、現在、未來三個位置。" + A.lead;
 
     var out = cards.map(function (c, i) {
       return {
@@ -296,6 +332,7 @@
 
     return {
       offline: true,
+      title: A.title(cards[0].theme, cards[2].theme),
       opening: opening,
       cards: out,
       conclusion: conclusion,
@@ -367,15 +404,17 @@
      * 塔羅解牌報告。cards 是三張牌的完整資料（含位置與牌義）。
      * 失敗時回本機版：把三張牌自己的欄位串成一份短一點但誠實的報告。
      */
-    tarot: function (question, cards) {
+    tarot: function (question, cards, angle) {
       return post({
         mode: "tarot",
         question: question || "",
-        cards: cards
+        cards: cards,
+        angle: angle || "default"
       }).then(function (data) {
         if (!data.opening || !data.cards || !data.conclusion) throw new Error("BAD_SHAPE");
         return {
           offline: false,
+          title: data.title || "",
           opening: data.opening,
           cards: data.cards,
           conclusion: data.conclusion,
@@ -383,7 +422,7 @@
           ask: data.ask || ""
         };
       }).catch(function () {
-        return offlineTarot(question, cards);
+        return offlineTarot(question, cards, angle);
       });
     },
 
