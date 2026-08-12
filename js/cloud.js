@@ -72,6 +72,36 @@
     });
   }
 
+  var providers = null;   // /auth/v1/settings 的結果，一個分頁只查一次
+
+  /**
+   * 查這個 Supabase 專案開了哪些登入方式。
+   *
+   * 為什麼需要這個：供應商沒開的時候，signInWithOAuth 只是在瀏覽器本機
+   * 組出一段網址，不會回報錯誤，所以彈出視窗會直接停在一段英文 JSON
+   * （Unsupported provider），學生看不懂、外層畫面也只會一直轉。
+   * 先問過再開視窗，就能換成看得懂的說明。
+   *
+   * @returns {Promise<boolean|null>} null 代表查不到（例如沒網路），照樣讓他試
+   */
+  function providerEnabled(name) {
+    if (!available()) return Promise.resolve(null);
+    if (!providers) {
+      providers = fetch(cfg().supabaseUrl + "/auth/v1/settings", {
+        headers: { apikey: cfg().supabaseKey }
+      }).then(function (r) {
+        return r.ok ? r.json() : null;
+      }).then(function (j) {
+        return (j && j.external) || null;
+      }).catch(function () {
+        return null;
+      });
+    }
+    return providers.then(function (ext) {
+      return ext ? !!ext[name] : null;
+    });
+  }
+
   /**
    * 用 Google 登入。
    * 開一個彈出視窗跑 OAuth；完成後 auth.html 會把 session 寫進 localStorage 並自己關掉，
@@ -82,6 +112,11 @@
       return Promise.reject(new Error("這個開啟方式不支援登入（請用網址開啟，而不是直接雙擊檔案）"));
     }
     return init().then(function () {
+      return providerEnabled("google");
+    }).then(function (ok) {
+      // 沒開就別開視窗了，直接丟出錯誤讓登入畫面顯示看得懂的說明
+      if (ok === false) throw new Error("Unsupported provider: provider is not enabled");
+
       var back = location.href.replace(/[^/]*$/, "") + "auth.html";
       return sb.auth.signInWithOAuth({
         provider: "google",
@@ -234,6 +269,7 @@
   LQ.cloud = {
     available: available,
     init: init,
+    providerEnabled: providerEnabled,
     signIn: signIn,
     signOut: signOut,
     user: function () { return user; },

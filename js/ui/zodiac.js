@@ -19,6 +19,12 @@
 
   function renderPick(isChange) {
     LQ.render(
+      /* 海報放最前面：它本身就是一張十二星座盤，剛好當成這一頁的開場 */
+      '<div class="zhero">' +
+        '<img src="' + LQ.data.scene("zodiac-wheel") +
+          '" alt="角色十二星座盤，迷宮裡的六個角色圍著星盤">' +
+      "</div>" +
+
       '<div class="sect"><h2>' + (isChange ? "換一個星座" : "先選你的星座") + "</h2></div>" +
 
       '<div class="card">' +
@@ -64,6 +70,9 @@
     var b = LQ.data.zodiacBarnum;
 
     LQ.render(
+      /* 細長版海報，只露出星盤中央，當作這一頁的抬頭 */
+      '<div class="zband"><img src="' + LQ.data.scene("zodiac-wheel") + '" alt=""></div>' +
+
       '<div class="sect"><h2>' + esc(z.name) + "</h2><small>" + esc(z.date) + "</small></div>" +
 
       /* 今日提問擺最上面，因為那才是每天要做的事 */

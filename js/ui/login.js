@@ -60,6 +60,10 @@
 
         '<p class="login__privacy">我們只會取得你的名稱與信箱，用來認出是誰的存檔。<br>' +
           "遊戲內容與反思紀錄不會給其他人看。</p>" +
+
+        '<div class="login__brand">' +
+          '<img src="assets/brand/taiyu-logo.webp" alt="泰宇出版">' +
+        "</div>" +
       "</div>";
 
     var g = document.getElementById("lg-google");
@@ -86,9 +90,17 @@
       if (/provider is not enabled|Unsupported provider/i.test(msg)) {
         LQ.ui.modal.modal({
           title: "還沒開啟 Google 登入",
-          body: "<p>資料庫那邊還沒設定 Google 登入。<br>" +
-                "設定完成之前，可以先選「先不登入，直接開始」。</p>" +
-                '<p style="font-size:12px;color:var(--ink-faint)">技術訊息：' + esc(msg) + "</p>",
+          body:
+            "<p>這個網站的資料庫還沒把 Google 登入打開，所以現在按了也連不上。<br>" +
+            "先選「先不登入，直接開始」就可以玩，進度會存在這台裝置。</p>" +
+            '<p style="font-size:12.5px;color:var(--ink-soft);line-height:1.9;margin-top:12px">' +
+              "<b style=\"color:var(--gold)\">給老師／管理者：</b><br>" +
+              "還差兩步，都要用你自己的帳號做：<br>" +
+              "1. 到 Google Cloud 建一組 OAuth 用戶端<br>" +
+              "2. 把 Client ID 與 Secret 貼進 Supabase 的 Google 供應商並開啟<br>" +
+              "詳細步驟在專案裡的 <code>GOOGLE登入設定.md</code>。</p>" +
+            '<p style="font-size:11.5px;color:var(--ink-faint);margin-top:10px">技術訊息：' +
+              esc(msg) + "</p>",
           acts: [{ label: "知道了", kind: "btn--ghost" }]
         });
       } else if (msg !== "登入取消") {

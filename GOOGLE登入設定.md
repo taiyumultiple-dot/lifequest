@@ -7,6 +7,22 @@
 
 ---
 
+## 目前狀態：**還沒開**（2026-08-11 查證）
+
+直接問過資料庫了，回來的答案是 `google: false` ——
+也就是下面的**步驟一與步驟二還沒完成**，只有 email 是開著的。
+所以按下「使用 Google 帳號登入」連不上 Google，不是程式壞掉。
+
+隨時可以自己查一次，把這個網址貼進瀏覽器：
+
+```
+https://qhogqfzaeyqkaljymyde.supabase.co/auth/v1/settings?apikey=sb_publishable_thgl-DBqBBkAjOgS6y4IfQ_gSR0K5V4
+```
+
+回應裡找 `"google"`：`false` 是還沒開，`true` 就是好了。
+
+---
+
 ## 資料庫那邊我已經做好了
 
 - Supabase 專案：`taiyutest-debug's Project`（`qhogqfzaeyqkaljymyde`）

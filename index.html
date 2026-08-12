@@ -12,9 +12,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap">
-<link rel="stylesheet" href="css/tokens.css?v=17">
-<link rel="stylesheet" href="css/components.css?v=17">
-<link rel="stylesheet" href="css/style.css?v=17">
+<link rel="stylesheet" href="css/tokens.css?v=21">
+<link rel="stylesheet" href="css/components.css?v=21">
+<link rel="stylesheet" href="css/style.css?v=21">
 </head>
 <body>
 
@@ -35,12 +35,19 @@
       <small id="topbar-name">陳可華</small>
     </span>
   </button>
-  <div class="topbar__res">
-    <span class="res res--mind" title="心力：開啟一扇門需要心力">
-      <i class="res__ico">◈</i><b id="res-stamina">100</b><small>/<span id="res-stamina-max">100</span></small>
-    </span>
-    <span class="res res--frag" title="記憶碎片：迷宮裡的通用資源">
-      <i class="res__ico">✦</i><b id="res-frag">0</b>
+  <div class="topbar__right">
+    <div class="topbar__res">
+      <span class="res res--mind" title="心力：開啟一扇門需要心力">
+        <i class="res__ico">◈</i><b id="res-stamina">100</b><small>/<span id="res-stamina-max">100</span></small>
+      </span>
+      <span class="res res--frag" title="記憶碎片：迷宮裡的通用資源">
+        <i class="res__ico">✦</i><b id="res-frag">0</b>
+      </span>
+    </div>
+    <!-- 出版社署名。窄螢幕放不下字標時只留人形圖標 -->
+    <span class="topbar__brand" title="泰宇出版">
+      <img class="topbar__brand-full" src="assets/brand/taiyu-logo.webp" alt="泰宇出版">
+      <img class="topbar__brand-mark" src="assets/brand/taiyu-mark.webp" alt="泰宇出版">
     </span>
   </div>
 </header>
@@ -73,51 +80,51 @@
 <div id="modal" class="modal" hidden></div>
 <div id="toast" class="toast" aria-live="polite"></div>
 
-<script src="js/config.js?v=17"></script>
-<script src="js/data/characters.js?v=17"></script>
-<script src="js/data/illusions.js?v=17"></script>
-<script src="js/data/titles.js?v=17"></script>
-<script src="js/data/shop-items.js?v=17"></script>
-<script src="js/data/daily-sets.js?v=17"></script>
-<script src="js/data/units.js?v=17"></script>
-<script src="js/data/tarot.js?v=17"></script>
-<script src="js/data/psychtests.js?v=17"></script>
-<script src="js/data/zodiac.js?v=17"></script>
-<script src="js/data/values.js?v=17"></script>
-<script src="js/data/lessons.js?v=17"></script>
-<script src="js/state.js?v=17"></script>
-<script src="js/cloud.js?v=17"></script>
-<script src="js/audio.js?v=17"></script>
-<script src="js/bgm.js?v=17"></script>
-<script src="js/game/keyforge.js?v=17"></script>
-<script src="js/game/economy.js?v=17"></script>
-<script src="js/game/daily.js?v=17"></script>
-<script src="js/game/illusions.js?v=17"></script>
-<script src="js/game/titles.js?v=17"></script>
-<script src="js/game/oracle.js?v=17"></script>
-<script src="js/game/lessons.js?v=17"></script>
-<script src="js/ui/modal.js?v=17"></script>
-<script src="js/ui/help.js?v=17"></script>
-<script src="js/ui/login.js?v=17"></script>
-<script src="js/ui/story.js?v=17"></script>
-<script src="js/ui/forge.js?v=17"></script>
-<script src="js/game/levelflow.js?v=17"></script>
-<script src="js/game/hunt.js?v=17"></script>
-<script src="js/ui/hub.js?v=17"></script>
-<script src="js/ui/daily.js?v=17"></script>
-<script src="js/ui/codex.js?v=17"></script>
-<script src="js/ui/character.js?v=17"></script>
-<script src="js/ui/shop.js?v=17"></script>
-<script src="js/ui/journal.js?v=17"></script>
+<script src="js/config.js?v=21"></script>
+<script src="js/data/characters.js?v=21"></script>
+<script src="js/data/illusions.js?v=21"></script>
+<script src="js/data/titles.js?v=21"></script>
+<script src="js/data/shop-items.js?v=21"></script>
+<script src="js/data/daily-sets.js?v=21"></script>
+<script src="js/data/units.js?v=21"></script>
+<script src="js/data/tarot.js?v=21"></script>
+<script src="js/data/psychtests.js?v=21"></script>
+<script src="js/data/zodiac.js?v=21"></script>
+<script src="js/data/values.js?v=21"></script>
+<script src="js/data/lessons.js?v=21"></script>
+<script src="js/state.js?v=21"></script>
+<script src="js/cloud.js?v=21"></script>
+<script src="js/audio.js?v=21"></script>
+<script src="js/bgm.js?v=21"></script>
+<script src="js/game/keyforge.js?v=21"></script>
+<script src="js/game/economy.js?v=21"></script>
+<script src="js/game/daily.js?v=21"></script>
+<script src="js/game/illusions.js?v=21"></script>
+<script src="js/game/titles.js?v=21"></script>
+<script src="js/game/oracle.js?v=21"></script>
+<script src="js/game/lessons.js?v=21"></script>
+<script src="js/ui/modal.js?v=21"></script>
+<script src="js/ui/help.js?v=21"></script>
+<script src="js/ui/login.js?v=21"></script>
+<script src="js/ui/story.js?v=21"></script>
+<script src="js/ui/forge.js?v=21"></script>
+<script src="js/game/levelflow.js?v=21"></script>
+<script src="js/game/hunt.js?v=21"></script>
+<script src="js/ui/hub.js?v=21"></script>
+<script src="js/ui/daily.js?v=21"></script>
+<script src="js/ui/codex.js?v=21"></script>
+<script src="js/ui/character.js?v=21"></script>
+<script src="js/ui/shop.js?v=21"></script>
+<script src="js/ui/journal.js?v=21"></script>
 <!-- 心象探索：oracle.js 要排在其他四支前面，它們用它的共用零件 -->
-<script src="js/ui/oracle.js?v=17"></script>
-<script src="js/ui/tarot.js?v=17"></script>
-<script src="js/ui/psych.js?v=17"></script>
-<script src="js/ui/zodiac.js?v=17"></script>
-<script src="js/ui/values.js?v=17"></script>
-<script src="js/ui/lessons.js?v=17"></script>
-<script src="js/ui/settings.js?v=17"></script>
-<script src="js/main.js?v=17"></script>
-<script src="js/pwa.js?v=17"></script>
+<script src="js/ui/oracle.js?v=21"></script>
+<script src="js/ui/tarot.js?v=21"></script>
+<script src="js/ui/psych.js?v=21"></script>
+<script src="js/ui/zodiac.js?v=21"></script>
+<script src="js/ui/values.js?v=21"></script>
+<script src="js/ui/lessons.js?v=21"></script>
+<script src="js/ui/settings.js?v=21"></script>
+<script src="js/main.js?v=21"></script>
+<script src="js/pwa.js?v=21"></script>
 </body>
 </html>
