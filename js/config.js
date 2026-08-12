@@ -46,6 +46,21 @@
       youtubeId: "BXsWn9DhF5g",
       file: "assets/audio/bgm.mp3",
       volume: 0.4
+    },
+
+    /* ---------------------------------------------------------------
+       星座的今日運勢與 AI 對話要打去哪個後端。
+
+       留空的話 js/game/aichat.js 會自己判斷：
+         ・在 localhost 開發 → /api/oracle-chat（平台的 server.ts）
+         ・線上 → {supabaseUrl}/functions/v1/oracle-chat
+         ・兩個都沒有 → 離線模式，畫面照常但沒有 AI
+
+       只有在後端放在別的網域時才需要填。
+       金鑰**不會**出現在這裡——真正呼叫 Gemini 的動作在後端做。
+       --------------------------------------------------------------- */
+    ai: {
+      endpoint: ""
     }
   };
 
