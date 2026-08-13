@@ -34,7 +34,7 @@
       "</div>" +
       '<div class="login__inner">' +
         '<div class="login__mark">LIFE EDUCATION QUEST</div>' +
-        '<h1 class="login__title">五門・心靈迷宮</h1>' +
+        '<h1 class="login__title">打開幸福人生之門・心靈迷宮</h1>' +
         '<p class="login__sub">穿過這五扇門，你才回得了家。</p>' +
 
         (state === "working"

@@ -40,10 +40,12 @@
 
     /* =====================================================================
        序章｜凝視生命的地圖
-       可華在父親車上被問到讀書壓力，爸爸用自己的人生道理勸他；可華望著
-       爸爸疲憊的日常，陷入沉思。半夢半醒間強光籠罩，他掉進多重宇宙般的
-       片段裡，最後變成中年大人、坐在辦公桌前。神秘通話者傳來「探索？」
-       的選項，他選了 YES，遇見長大後的王小文，兩人一起走向五扇門。
+       依「00 [最終版] 總說 生命教育 單元內容」腳本與分鏡逐格照搬：
+       媽媽叫醒可華、爸爸車上談讀書壓力與幸福人生、可華回想爸爸疲憊的
+       日常而陷入反思；強光籠罩、掉進多重宇宙變成中年大人、辦公室同事
+       的冷言冷語；電腦跳出「你真的想要改變？」的 YES/NO 選項，他選了
+       YES，遇見長大後的王小文，兩人一起走向五扇門。
+       場景圖是分鏡文件裡的原圖（assets/scenes/p00-*.webp，29 張）。
        ===================================================================== */
     {
       id: "p00", no: "序章", name: "凝視生命的地圖",
@@ -54,42 +56,71 @@
       reward: 300,
 
       intro: [
-        { img: "p00-wake", who: "narrator", text: "可華一早起床，爸爸就載他上學，途中爸爸關心問到：" },
-        { img: "p00-ride", who: "dad", text: "昨晚有因為準備考試而熬夜嗎？" },
-        { img: "p00-ride", who: "narrator", text: "可華打著哈欠回應：" },
-        { img: "p00-ride", who: "kehua", text: "讀書真的超累的，班上同學都是學霸，時間總是不夠用，書感覺永遠讀不完，為什麼要過這樣的生活？" },
-        { img: "p00-ride", who: "narrator", text: "爸爸試著用自己經歷的人生道理說服可華：" },
-        { img: "p00-ride", who: "dad", text: "學生只需要認真讀書，是很幸福的！等你長大出社會工作，才知道什麼叫壓力。" },
-        { img: "p00-ride", who: "dad", text: "好好用功讀書，考上大學，未來才會有好的工作，才會有幸福的人生啊！" },
-        { img: "p00-dusk", who: "narrator",
-          text: "對於爸爸說的幸福人生，可華回想爸爸經常拖著疲累的身軀，熬夜加班工作，壓力大到假日只能像爛泥一般癱在沙發上——這樣的生活真的是幸福人生嗎？可華陷入沈思⋯⋯" },
-        { img: "p00-bridge", who: "narrator", text: "車上的可華，思考著自己是否會變成和父親一樣。半夢半醒間，突然一陣強光籠罩——" },
-        { img: "p00-eyes", who: "narrator",
-          text: "可華睜眼，發現自己在光怪陸離、如同「多重宇宙」般的世界裡；高中生樣貌的他，在各種平行世界的片段當中穿梭掉落了十幾秒。" },
-        { img: "p00-office", who: "narrator", text: "最後掉在辦公桌前，同事叫他起來工作——可華發現自己已經變成中年大人模樣，驚慌失措，" },
-        { img: "p00-office", who: "narrator", text: "表示自己還是高中生、根本不知道同事在說什麼，但對方只叫他把事情完成，或是去看醫生。" },
-        { img: "p00-alone", who: "narrator", text: "突然，電腦螢幕跳出對話視窗，神秘通話者要他冷靜，問他——" },
-        { img: "p00-alone", who: "narrator", text: "「你真的想要改變？」" },
-        { img: "p00-alone", who: "kehua", text: "什麼意思？" },
-        { img: "p00-alone", who: "narrator", text: "神秘通話者傳來一個檔案，裡面是一個簡單的選項——「探索，YES / NO」。" },
+        /* 場景一：日常的早晨與上學途中 */
+        { img: "p00-mom-shout", who: "narrator", text: "「陳可華！6 點了！你再不起床就要遲到了！」" },
+        { img: "p00-sleep", who: "narrator", text: "可華睡得流口水，鬧鐘急促地響著。" },
+        { img: "p00-getready", who: "narrator", text: "手忙腳亂地刷牙、套上運動服。" },
+        { img: "p00-bag", who: "narrator", text: "抓起書包，踩進鞋子。" },
+        { img: "p00-toast", who: "narrator", text: "桌上一盤火腿蛋吐司，還沒吃完就被端走了。" },
+        { img: "p00-doorlock", who: "narrator", text: "轉開喇叭鎖，拉開大門。" },
+        { img: "p00-carext", who: "narrator", text: "白色休旅車停在家門口，可華關上車門，一臉疲憊。" },
+        { img: "p00-cardrive", who: "narrator", text: "車子緩緩駛離。" },
+        { img: "p00-yawn", who: "kehua", text: "（打哈欠）啊～～～" },
+
+        /* 場景二：父子在車內的觀念對話 */
+        { img: "p00-memory-study", who: "dad", text: "怎麼了？昨天沒睡好嗎？" },
+        { img: "p00-memory-study", who: "kehua", text: "嗯……昨天熬夜寫報告，等一下要考的英文單字也還沒背完，好累喔，壓力超大的。" },
+        { img: "p00-dad-drive", who: "dad", text: "學生只需要認真讀書，是很幸福的。等你出社會工作才知道，什麼叫做壓力。" },
+        { img: "p00-kehua-confused", who: "kehua", text: "每個人都這樣講，可是就真的很累啊。到底為什麼要讀這麼多書啊？" },
+        { img: "p00-dad-pov-bridge", who: "dad", text: "因為好好用功讀書，考上好大學，未來才會有好的工作，才會有幸福的人生啊。" },
+        { img: "p00-kehua-doubt", who: "kehua", text: "真的嗎？" },
+
+        /* 場景三：可華的內心反思與回憶 */
+        { img: "p00-bw-recall", who: "kehua", text: "（內心獨白）用功讀書以後，就能夠獲得幸福的人生嗎？" },
+        { img: "p00-dad-office-stress", who: "narrator",
+          text: "可華腦海中浮現爸爸在辦公室的畫面：他一臉疲憊焦慮地看著筆電，主管拿著一疊公文在旁指指點點，氣氛沉重。" },
+        { img: "p00-dad-sofa-slump", who: "narrator",
+          text: "畫面切換，爸爸神情憔悴，失去活力地癱躺在沙發上，雙眼失神，像一灘爛泥。" },
+        { img: "p00-dad-despair", who: "kehua", text: "（內心獨白）這種日子感覺太辛苦了，以後也會這樣嗎？" },
+        { img: "p00-car-fadeout", who: "kehua", text: "（內心獨白）我未來想要過的人生，跟我現在做的事情，真的有關係嗎？" },
+
+        /* 總說［加長版］：強光、多重宇宙、變成中年大人 */
+        { img: "p00-light-begin", who: "kehua", text: "怎麼這麼亮……" },
+        { img: "p00-light-begin", who: "kehua", text: "到底是發生了什麼……啊！！" },
+        { img: "p00-multiverse", who: "narrator",
+          text: "光芒逐漸消去，高中生樣貌的可華睜眼，發現自己在光怪陸離、如同「多重宇宙」般的世界裡穿梭墜落——四周充滿旋轉的古老鑰匙、飄散的紙張，與金紫交織的時空漩渦。" },
+        { img: "p00-desk-land", who: "kehua", text: "（大喘氣）蛤……？這、這是哪裡？！" },
+        { img: "p00-coworker-tap", who: "narrator", text: "「又在做夢了，上班不要偷懶耶！」一個同事拍了拍他的肩膀，丟下一疊厚厚的公文袋。" },
+        { img: "p00-mirror-shock", who: "kehua", text: "我……我還是高中生啊！我剛剛明明在我爸的車上……你在說什麼？！" },
+        { img: "p00-coworker-cold", who: "narrator", text: "「假裝有病看醫生啊？事沒做完別想走。」同事冷眼看著他，翻了個白眼，轉身離開。" },
+        { img: "p00-coworker-cold", who: "kehua", text: "這到底是怎麼了？我……我該怎麼辦……" },
+
+        /* YES / NO 的選擇 */
+        { img: "p00-choice-screen", who: "narrator", text: "辦公室的時間彷彿突然定格。電腦螢幕跳出黑色跳動視窗——" },
+        { img: "p00-choice-screen", who: "narrator", text: "「你真的想要改變？」" },
+        { img: "p00-choice-screen", who: "kehua", text: "什麼意思？" },
+        { img: "p00-choice-screen", who: "narrator", text: "螢幕隨即傳來一個檔案，打開呈現簡單選項——「探索，YES / NO」。" },
         {
-          img: "p00-alone", who: "narrator",
-          text: "游標在螢幕上猶豫地移動著。",
+          img: "p00-choice-popup", who: "narrator",
+          text: "可華顫抖著移動滑鼠。",
           choice: {
             prompt: "要把滑鼠放上哪一邊？",
             options: [
               { label: "YES ── 探索",
-                after: "身旁浮現一扇門，深邃而黑暗，透出恐怖而未知的氣息。" },
+                after: "浮現一扇漆黑深邃、透出未知恐怖氣息的巨型鐵門——門內透出黑煙，接著閃電與火焰從門縫爆出，門打開，黑暗中跑出許多雙紅眼。" },
               { label: "NO ── 算了",
-                after: "另一邊浮現另一扇門，裡面是可華平靜而單調、如同他父親一般不斷輪轉重複的人生。" }
+                after: "浮現另一扇帶著溫馨自然氣息的木門，裡面是可華平靜單調、如同父親一般「日復一日加班」「癱軟在沙發上」「開車上下班」的人生。" }
             ]
           }
         },
-        { img: "p00-bridge", who: "narrator", text: "猶豫一會，可華按下 YES。四周突然像是電腦 BUG glitch 一樣閃動，" },
-        { img: "gate-walk", who: "xiaowen", text: "想逃出去的話，跟我走。有問題，後面再說。" },
-        { img: "gate-walk", who: "narrator", text: "可華看了看另一扇自己的中年生活輪迴門，最後選擇走入 YES 門中。門關，兩人身處形似「全面啟動」的大樓群之中。" },
-        { img: "gate-duo", who: "xiaowen", text: "來吧。" },
-        { img: "gate-hall", who: "narrator", text: "她指向其中五扇門，表示他們要穿過這些關卡，才能回家……" }
+        { img: "p00-choice-popup", who: "narrator", text: "可華看了看右邊單調的輪迴門，又看了看左邊的恐怖門，猶豫後咬牙——按下 YES！" },
+        { img: "p00-xiaowen-emerge", who: "narrator",
+          text: "四周瞬間像電腦 BUG glitch 一樣爆發閃爍撕裂。YES 門開啟，一位幹練、眼神明亮且帶有笑容的神秘女子（長大後的小文）優雅步出。" },
+        { img: "p00-xiaowen-emerge", who: "xiaowen", text: "答對了。跟著我！" },
+        { img: "p00-five-gates-reveal", who: "narrator", text: "可華深吸一口氣，握住小文的手，踏入 YES 門中，光芒淹沒了他……" },
+        { img: "p00-five-gates-reveal", who: "narrator",
+          text: "可華睜眼，兩人置身於一座幾何折疊、宛如《全面啟動》般在空中扭曲懸浮的龐大大樓群中。" },
+        { img: "p00-five-gates-reveal", who: "xiaowen", text: "來吧。我們必須穿過這五道關卡，才能回到真正的家。" }
       ],
 
       villain: {

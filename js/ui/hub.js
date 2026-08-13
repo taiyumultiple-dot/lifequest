@@ -61,7 +61,7 @@
         "</div>" +
         '<div class="hero-title">' +
           '<div class="hero__mark">LIFE EDUCATION QUEST</div>' +
-          '<h1 class="hero__title">五門・心靈迷宮</h1>' +
+          '<h1 class="hero__title">打開幸福人生之門・心靈迷宮</h1>' +
           '<p class="hero__line">穿過這五扇門，你才回得了家。</p>' +
         "</div>" +
 

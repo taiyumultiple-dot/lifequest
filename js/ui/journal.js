@@ -24,7 +24,7 @@
 
     var html =
       '<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8">' +
-      "<title>五門・心靈迷宮 成長紀錄</title><style>" +
+      "<title>打開幸福人生之門・心靈迷宮 成長紀錄</title><style>" +
       "body{font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;max-width:720px;margin:40px auto;padding:0 20px;line-height:1.9;color:#222}" +
       "h1{font-size:24px;border-bottom:2px solid #C9A24B;padding-bottom:10px}" +
       ".e{margin:24px 0;padding:16px 18px;border:1px solid #ddd;border-radius:10px;page-break-inside:avoid}" +

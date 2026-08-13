@@ -151,7 +151,7 @@
     }, 700);
 
     // 開發用：在 console 打 LQ.keyforge.selfTest() 可以驗證核心引擎
-    console.log("五門・心靈迷宮 已啟動。輸入 LQ.keyforge.selfTest() 可驗證鑄鑰引擎。");
+    console.log("打開幸福人生之門・心靈迷宮 已啟動。輸入 LQ.keyforge.selfTest() 可驗證鑄鑰引擎。");
   }
 
   LQ.render = render;
