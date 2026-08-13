@@ -164,6 +164,9 @@
           "換手機也還在——同學和老師在遊戲裡看不到。</p>" +
       "</div>" +
 
+      /* 寫完之後，這一關的角色會在這裡回話 */
+      '<div id="rf-respond" hidden></div>' +
+
       helpline
     );
 
@@ -171,10 +174,29 @@
     document.getElementById("rf-save").addEventListener("click", function () {
       var v = document.getElementById("rf-input").value.trim();
       if (!v) { LQ.ui.modal.toast("還沒寫東西喔", true); return; }
+
       LQ.state.addJournal(u.id, u.no + "｜" + u.name, u.reflect.q, v);
       LQ.audio.good();
       LQ.ui.modal.toast("已存進成長紀錄");
-      LQ.go("hub");
+
+      /* 存好之後不直接回大廳——先讓角色回他一段。
+         輸入框鎖起來（避免存第二次），按鈕換成「回五扇門」。 */
+      var input = document.getElementById("rf-input");
+      input.readOnly = true;
+      input.style.opacity = ".65";
+
+      var save = document.getElementById("rf-save");
+      save.textContent = "回五扇門";
+      save.classList.remove("btn--gold");
+      save.classList.add("btn--ghost");
+      save.replaceWith(save.cloneNode(true));   // 清掉這個 listener
+      document.getElementById("rf-save").addEventListener("click", function () { LQ.go("hub"); });
+      document.getElementById("rf-skip").hidden = true;
+
+      LQ.ui.respond.mount(document.getElementById("rf-respond"), {
+        unitId: u.id, unitName: u.no + "｜" + u.name,
+        virtue: u.virtue, question: u.reflect.q, answer: v
+      });
     });
 
     LQ.audio.coin();

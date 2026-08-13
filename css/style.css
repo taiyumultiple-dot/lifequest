@@ -543,6 +543,49 @@
 .entry__a { font-size: 14px; color: var(--ink-soft); margin: 0; white-space: pre-wrap; line-height: 1.85; }
 
 /* ==========================================================================
+   角色回應（玩家寫完反思，角色回他一段話）
+   ========================================================================== */
+
+.respond {
+  margin-top: 14px; padding: 15px 16px; border-radius: var(--r-md);
+  border: 1px solid var(--line-gold); background: rgba(233, 200, 119, .06);
+  animation: rise var(--dur) var(--ease);
+}
+.respond__who { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
+.respond__face {
+  width: 38px; height: 38px; flex: none; border-radius: 50%;
+  object-fit: cover; border: 1px solid var(--line-gold); background: var(--bg-2);
+}
+.respond__face--none {
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 17px;
+}
+.respond__who b { font-size: 14px; color: var(--gold); display: block; line-height: 1.35; }
+.respond__who small { font-size: 11px; color: var(--ink-faint); }
+.respond__tag { margin-left: auto; font-size: 10.5px; color: var(--ink-faint); }
+
+.respond__body p {
+  margin: 0; font-size: 14px; line-height: 1.95; color: var(--ink);
+  white-space: pre-wrap;
+}
+
+/* 等回應時的三點跳動 */
+.respond__dots { display: inline-flex; gap: 5px; padding: 6px 0; }
+.respond__dots i {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
+  opacity: .35; animation: rp-blink 1.1s infinite;
+}
+.respond__dots i:nth-child(2) { animation-delay: .18s; }
+.respond__dots i:nth-child(3) { animation-delay: .36s; }
+@keyframes rp-blink { 0%, 60%, 100% { opacity: .3; } 30% { opacity: 1; } }
+
+.respond__more { margin-top: 12px; }
+.respond__more textarea { margin-bottom: 8px; }
+.respond__end {
+  margin: 0; font-size: 12.5px; color: var(--ink-faint); line-height: 1.75;
+}
+
+/* ==========================================================================
    心象探索（塔羅・測驗・星座・價值羅盤）
    ========================================================================== */
 

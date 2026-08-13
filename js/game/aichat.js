@@ -191,6 +191,93 @@
     }
   ];
 
+  /* --- 角色回應（玩家寫完反思之後）---------------------------------
+     跟上面的對話題庫不一樣的地方：這裡回話的是遊戲裡的某個角色，
+     而且它要讓玩家覺得「這個人真的讀了我寫的東西」。做法不是硬誇，
+     是先講出玩家這段寫法的**特徵**（有沒有講到具體的某一次、有沒有
+     給理由、是不是只寫了幾個字），再用角色的口吻接一句，最後追問。 */
+
+  /** 哪一關由誰回話。挑的是那一關主題上最有話講的人。 */
+  var VOICE_OF = {
+    p00: "xiaowen",    // 總說：把可華拉進迷宮的人
+    u01: "xiaowen",    // 哲學思考：博士，最會把問題拆開
+    u02: "xiaoping",   // 人學探索：標籤與自我，她最懂被貼標籤
+    u03: "grandpa",    // 終極關懷：生病、失去與告別
+    u04: "bojun",      // 價值思辨：會直接問「那你到底要選哪個」
+    u05: "dad"         // 靈性修養：休息與罪惡感，爸爸自己走過
+  };
+
+  /* 追問要綁「這一關的題目」，不能用上面那套泛用主題題庫。
+     實測過：玩家寫「分組報告時我不敢問為什麼」，泛用題庫會命中
+     「報告」這個關鍵字然後問他分數，但他講的根本不是分數。
+     所以每一關自己配一組追問，接著它自己的反思題往下問。 */
+  var ASK_OF = {
+    p00: [   // 「原本想問為什麼，最後說了都可以」
+      "那句「都可以」說出口的前一秒，你心裡真正想說的是什麼？",
+      "如果重來一次，你會怎麼開口？把那句話寫出來看看。",
+      "你是怕被覺得難搞，還是覺得講了也改變不了？這兩個要處理的方式不一樣。"
+    ],
+    u01: [   // 「原本覺得不用想那麼多，其實值得多想」
+      "你說「不用想那麼多」的時候，是真的不想想，還是想了會麻煩？",
+      "如果多想一下，你怕會想到什麼？",
+      "這件事你如果認真想清楚，第一個要問的問題會是什麼？"
+    ],
+    u02: [   // 「別人常拿來形容你、但你不同意的詞」
+      "那個詞是誰先講的？後來為什麼大家都跟著用？",
+      "你有反駁過嗎？如果沒有，是因為懶得解釋，還是怕解釋了更奇怪？",
+      "如果只能用一句話讓別人改觀，你會說什麼？"
+    ],
+    u03: [   // 「一直想說但還沒說出口的一句話」
+      "為什麼還沒說？是還沒有機會，還是說了怕改變什麼？",
+      "如果對方明天就聽不到了，你今天會說嗎？",
+      "這句話你希望他聽完之後，做什麼、或不做什麼？"
+    ],
+    u04: [   // 「和別人看法不一樣，你的理由」
+      "你的理由裡，哪一個部分是對方也會同意的？從那裡開始講會比較好談。",
+      "如果對方的理由也成立，你會改變想法嗎？還是你其實在乎的是別的事？",
+      "這件事如果最後照對方的做，你最不能接受的是哪一點？"
+    ],
+    u05: [   // 「只能為自己做一件很小的事」
+      "這件小事你上一次做是什麼時候？中間為什麼停了？",
+      "做這件事的時候，你會有罪惡感嗎？那個聲音是誰的？",
+      "如果今天真的做了，你希望明天的自己有什麼不一樣？"
+    ]
+  };
+
+  /** 每個角色的招牌開場，語氣要區分得出來 */
+  var VOICE_LINE = {
+    xiaowen: ["這裡有一個可以再拆一層的地方。", "我先不給答案，我想先確認一件事。"],
+    xiaoping: ["我看得懂這種感覺，我也常常這樣。", "你寫這段的時候，應該有點難吧。"],
+    grandpa: ["我活到這個歲數，這種事看過不少次。", "不急，這種事本來就想不快。"],
+    bojun: ["欸，我直接講喔。", "這個我有話說。"],
+    dad: ["爸爸以前也是這樣過來的。", "我年輕的時候沒人跟我講這個。"],
+    kehua: ["我也在想一樣的事。", "說實話，我沒有比你清楚。"]
+  };
+
+  /** 看玩家寫了什麼「形狀」，回一句真的針對他那段話的觀察 */
+  function shapeNote(t) {
+    var when = /今天|昨天|上禮拜|上週|那天|上次|前幾天|剛剛|早上|晚上/.test(t);
+    var who = /他|她|朋友|同學|媽|爸|老師|哥|姐|弟|妹|阿嬤|阿公|爺爺|奶奶/.test(t);
+    var why = /因為|所以|但是|可是|不過|其實|反而|才會/.test(t);
+
+    if (t.length < 12) {
+      return "你寫得很短。短不代表不真，但我猜你其實還有下半句沒寫。";
+    }
+    if (when && who) {
+      return "你講了一個很具體的場景——有時間、有人。這種寫法騙不了自己，很好。";
+    }
+    if (why) {
+      return "你有替自己的反應找理由，這比只寫「我就是不爽」多走了一步。";
+    }
+    if (who) {
+      return "這件事裡有別人。有別人的事最難，因為你只能決定自己那一半。";
+    }
+    if (when) {
+      return "你記得是哪一次。記得住的那一次，通常就是真正卡住的那一次。";
+    }
+    return "你寫的是一個狀態，還沒有落到某一次。落到某一次，它才會變得可以處理。";
+  }
+
   /** 沒有命中任何主題時用的 */
   var GENERAL = {
     echo: "我讀完了。你寫的這件事，聽起來還沒有真的過去。",
@@ -359,6 +446,41 @@
     } catch (e) { /* 存不進去也無所謂 */ }
   }
 
+  /**
+   * 離線版的角色回應。
+   * @param {object} ch   角色資料（LQ.data.characters 裡的一筆）
+   * @param {object} ctx  { unitId, unitName, virtue, question }
+   * @param {string} text 玩家寫的東西
+   * @param {number} turn 第幾輪（追問才不會重複）
+   */
+  function offlineCompanion(ch, ctx, text, turn) {
+    var t = String(text || "").trim();
+    if (!t) return "你還沒寫東西。想到什麼寫什麼，寫壞了也沒關係。";
+    if (hit(t, CRISIS)) return CRISIS_REPLY;
+
+    var n = typeof turn === "number" ? turn : 0;
+
+    /* 追問優先用這一關自己的（接著它的反思題往下問）。
+       沒有對應的關卡才退回泛用主題題庫。 */
+    var asks = ASK_OF[ctx && ctx.unitId];
+    if (!asks) {
+      var topic = GENERAL;
+      for (var i = 0; i < TOPICS.length; i++) {
+        if (hit(t, TOPICS[i].keys)) { topic = TOPICS[i]; break; }
+      }
+      asks = topic.asks;
+    }
+
+    var lines = VOICE_LINE[ch.key] || VOICE_LINE.kehua;
+    var open = lines[n % lines.length];
+    var q = quoteBack(t);
+
+    return (q ? q + "\n\n" : "") +
+      open + "\n\n" +
+      shapeNote(t) + "\n\n" +
+      asks[n % asks.length];
+  }
+
   var AI = {
 
     /** 這台裝置有沒有可能連得到 AI（畫面用來決定要不要顯示「離線」標示）*/
@@ -445,6 +567,59 @@
         // 換算成「這是第幾輪」，離線題庫才不會一直問同一句
         var turn = (history || []).filter(function (m) { return m.role === "user"; }).length;
         return { text: offlineReply(text, turn), offline: true };
+      });
+    },
+
+    /** 這一關由哪個角色回話 */
+    voiceFor: function (unitId) {
+      var key = VOICE_OF[unitId] || "xiaowen";
+      var ch = (LQ.data && LQ.data.characters && LQ.data.characters[key]) || {};
+      return {
+        key: key, name: ch.name || "王小文",
+        face: ch.face || "", role: ch.role || "", about: ch.about || ""
+      };
+    },
+
+    /**
+     * 角色回應玩家寫的反思。
+     *
+     * 線上走的是後端**既有的** mode:"chat"，不是新的 mode——Supabase 上那支
+     * oracle-chat 函式的原始碼不在這個 repo 裡，加新 mode 就得重新部署。
+     * 沿用 chat 的話，等金鑰一設好，這個功能立刻就有真 AI，不用動後端。
+     * traits 那四格改放角色的設定，signName 放角色名字。
+     *
+     * @param {object} ctx { unitId, unitName, virtue, question }
+     * @param {array}  history [{role:"user"|"ai", text}]
+     * @param {string} text 玩家寫的東西
+     */
+    companion: function (ctx, history, text) {
+      var v = AI.voiceFor(ctx.unitId);
+      var ch = (LQ.data && LQ.data.characters && LQ.data.characters[v.key]) || {};
+
+      return post({
+        mode: "chat",
+        date: LQ.state.today(),
+        sign: v.key,
+        signName: v.name,
+        traits: {
+          said: v.name + "（" + v.role + "）：" + (ch.about || ""),
+          truth: "現在在回應一位高中生剛寫完的反思。題目是「" + (ctx.question || "") + "」。",
+          lesson: "這一關的主題是「" + (ctx.virtue || "") + "」（" + (ctx.unitName || "") + "）。",
+          stuck: "用這個角色的口吻，先接住他寫的內容，再問一個能讓他多想一層的問題。" +
+                 "不要說教、不要打分數、不要給結論。三段以內。"
+        },
+        history: (history || []).slice(-6),
+        message: text
+      }).then(function (data) {
+        if (!data.text) throw new Error("EMPTY");
+        return { text: data.text, who: v, offline: false };
+      }).catch(function () {
+        /* history 進來時已經含這一句了，所以要減一，第一次回應才會用到
+           該關最主要的那個追問（asks[0]）。 */
+        var turn = (history || []).filter(function (m) { return m.role === "user"; }).length - 1;
+        if (turn < 0) turn = 0;
+        var chWithKey = { key: v.key, name: v.name };
+        return { text: offlineCompanion(chWithKey, ctx, text, turn), who: v, offline: true };
       });
     }
   };
