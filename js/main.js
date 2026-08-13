@@ -136,19 +136,16 @@
 
     go("hub");
 
-    // 收起開場畫面 → 進登入畫面 → 選完 → 開場影片（只有第一次）→ 顯示遊戲
-    function enterGame() {
-      elTop.hidden = false;
-      elScreen.hidden = false;
-      elNav.hidden = false;
-      go("hub");
-    }
+    // 收起開場畫面 → 進登入畫面 → 選完才顯示遊戲
     setTimeout(function () {
       elBoot.classList.add("boot--out");
       setTimeout(function () {
         elBoot.remove();
         LQ.ui.login.boot(function () {
-          LQ.ui.prologue.playOnce(enterGame);
+          elTop.hidden = false;
+          elScreen.hidden = false;
+          elNav.hidden = false;
+          go("hub");
         });
       }, 520);
     }, 700);

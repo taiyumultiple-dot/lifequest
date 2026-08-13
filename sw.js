@@ -8,7 +8,7 @@
 
    改版時把 CACHE 的版本號 +1，舊快取會自動被清掉。
    ========================================================================== */
-var CACHE = "lifequest-v22";
+var CACHE = "lifequest-v23";
 
 /* 安裝時先抓起來的核心檔案（少一兩支也不會讓安裝失敗）*/
 var CORE = [
@@ -49,7 +49,6 @@ var CORE = [
   "./js/ui/modal.js",
   "./js/ui/help.js",
   "./js/ui/login.js",
-  "./js/ui/prologue.js",
   "./js/ui/story.js",
   "./js/ui/forge.js",
   "./js/ui/hub.js",

@@ -137,32 +137,6 @@
 .story__dots span { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.2); }
 .story__dots span.on { background: var(--gold); }
 
-/* ==========================================================================
-   開場影片（全螢幕）
-   ========================================================================== */
-
-.prologue {
-  position: fixed; inset: 0; z-index: 80;
-  background: #000;
-  display: flex; align-items: center; justify-content: center;
-  animation: fade var(--dur) var(--ease);
-}
-.prologue__video { width: 100%; height: 100%; object-fit: contain; background: #000; }
-.prologue__skip {
-  position: absolute; z-index: 1;
-  right: calc(14px + env(safe-area-inset-right, 0px));
-  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-  padding: 8px 16px; border-radius: 999px; font-size: 12.5px;
-  border: 1px solid rgba(255,255,255,.32); background: rgba(7,11,20,.55); color: #fff;
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-}
-.prologue__play {
-  position: absolute; inset: 0; z-index: 2;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-  background: rgba(5,8,15,.55); color: #fff; font-size: 30px;
-}
-.prologue__play span { font-size: 13px; color: var(--ink-soft); }
-
 /* 抉擇 */
 .choices { display: flex; flex-direction: column; gap: 9px; margin-top: 12px; }
 .choice {
