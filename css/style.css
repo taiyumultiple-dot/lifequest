@@ -17,14 +17,12 @@
   border: 1px solid var(--line-gold); box-shadow: var(--shadow);
   margin-top: 6px;
 }
-.hero__img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
-.hero__veil {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(7,11,20,.10) 0%, rgba(7,11,20,.55) 52%, rgba(7,11,20,.95) 100%);
-}
-.hero__txt { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px; }
+.hero__video { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #000; }
+
+/* 文字獨立放在影片下面，不疊在影片上 */
+.hero-title { padding: 16px 4px 2px; }
 .hero__mark { font-size: 10px; letter-spacing: .40em; text-indent: .40em; color: var(--gold); }
-.hero__title { font-size: 27px; letter-spacing: .10em; margin: 3px 0 8px; text-shadow: 0 2px 22px rgba(0,0,0,.8); }
+.hero__title { font-size: 24px; letter-spacing: .10em; margin: 3px 0 6px; color: var(--ink); }
 .hero__line { font-size: 13.5px; color: var(--ink-soft); margin: 0; }
 
 /* 目前的目標 */
@@ -138,6 +136,32 @@
 .story__dots { display: flex; gap: 4px; margin-right: auto; }
 .story__dots span { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.2); }
 .story__dots span.on { background: var(--gold); }
+
+/* ==========================================================================
+   開場影片（全螢幕）
+   ========================================================================== */
+
+.prologue {
+  position: fixed; inset: 0; z-index: 80;
+  background: #000;
+  display: flex; align-items: center; justify-content: center;
+  animation: fade var(--dur) var(--ease);
+}
+.prologue__video { width: 100%; height: 100%; object-fit: contain; background: #000; }
+.prologue__skip {
+  position: absolute; z-index: 1;
+  right: calc(14px + env(safe-area-inset-right, 0px));
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  padding: 8px 16px; border-radius: 999px; font-size: 12.5px;
+  border: 1px solid rgba(255,255,255,.32); background: rgba(7,11,20,.55); color: #fff;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.prologue__play {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  background: rgba(5,8,15,.55); color: #fff; font-size: 30px;
+}
+.prologue__play span { font-size: 13px; color: var(--ink-soft); }
 
 /* 抉擇 */
 .choices { display: flex; flex-direction: column; gap: 9px; margin-top: 12px; }

@@ -55,13 +55,13 @@
 
       LQ.render(
         '<div class="hero">' +
-          '<img class="hero__img" src="' + LQ.data.scene("gate-hall") + '" alt="矗立著五扇高聳大門的心靈迷宮">' +
-          '<div class="hero__veil"></div>' +
-          '<div class="hero__txt">' +
-            '<div class="hero__mark">LIFE EDUCATION QUEST</div>' +
-            '<h1 class="hero__title">五門・心靈迷宮</h1>' +
-            '<p class="hero__line">穿過這五扇門，你才回得了家。</p>' +
-          "</div>" +
+          '<video class="hero__video" src="assets/videos/prologue.mp4" autoplay muted loop playsinline ' +
+            'aria-label="矗立著五扇高聳大門的心靈迷宮"></video>' +
+        "</div>" +
+        '<div class="hero-title">' +
+          '<div class="hero__mark">LIFE EDUCATION QUEST</div>' +
+          '<h1 class="hero__title">五門・心靈迷宮</h1>' +
+          '<p class="hero__line">穿過這五扇門，你才回得了家。</p>' +
         "</div>" +
 
         '<div class="goal">' +

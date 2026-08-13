@@ -8,7 +8,7 @@
 
    改版時把 CACHE 的版本號 +1，舊快取會自動被清掉。
    ========================================================================== */
-var CACHE = "lifequest-v21";
+var CACHE = "lifequest-v22";
 
 /* 安裝時先抓起來的核心檔案（少一兩支也不會讓安裝失敗）*/
 var CORE = [
@@ -49,6 +49,7 @@ var CORE = [
   "./js/ui/modal.js",
   "./js/ui/help.js",
   "./js/ui/login.js",
+  "./js/ui/prologue.js",
   "./js/ui/story.js",
   "./js/ui/forge.js",
   "./js/ui/hub.js",
@@ -90,7 +91,7 @@ self.addEventListener("activate", function (e) {
 
 /** 圖片、字型這類不會變的東西 */
 function isStatic(url) {
-  return /\.(png|jpe?g|webp|gif|svg|ico|woff2?|ttf|mp3|ogg)$/i.test(url.pathname);
+  return /\.(png|jpe?g|webp|gif|svg|ico|woff2?|ttf|mp3|ogg|mp4)$/i.test(url.pathname);
 }
 
 self.addEventListener("fetch", function (e) {

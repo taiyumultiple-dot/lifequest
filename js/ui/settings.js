@@ -139,6 +139,10 @@
           '<button type="button" class="row" id="st-help"><i>✚</i>' +
             "<div><b>需要幫忙的時候</b><p>安心專線與求助管道。</p></div>" +
             '<span class="row__val">查看</span></button>' +
+
+          '<button type="button" class="row" id="st-prologue"><i>▶</i>' +
+            "<div><b>重播開場影片</b><p>登入後第一次會自動播的那段。</p></div>" +
+            '<span class="row__val">播放</span></button>' +
         "</div>" +
 
         '<div class="sect"><h2>內容</h2></div>' +
@@ -227,6 +231,9 @@
         LQ.ui.help.open("story");
       });
       document.getElementById("st-help").addEventListener("click", helpModal);
+      document.getElementById("st-prologue").addEventListener("click", function () {
+        LQ.ui.prologue.replay(function () {});
+      });
       document.getElementById("st-pack").addEventListener("click", loadPack);
 
       var un = document.getElementById("st-unpack");
