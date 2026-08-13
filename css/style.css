@@ -15,7 +15,14 @@
 .hero {
   position: relative; border-radius: var(--r-lg); overflow: hidden;
   border: 1px solid var(--line-gold); box-shadow: var(--shadow);
-  margin-top: 6px;
+  margin: 6px auto 0;
+  width: 100%;
+  /* 寬螢幕（尤其「沉浸全螢幕」）時，4:3 的高度會超過視窗高度，
+     害影片上下被切掉、藏到頂列後面。用視窗高度反推寬度上限，
+     讓整支影片永遠一次塞進畫面，不用捲動。窄螢幕（手機）算出來的
+     上限本來就比 100% 寬，不會有影響。 */
+  max-width: calc((100vh - var(--topbar-h) - var(--nav-h) - var(--safe-b) - 40px) * 4 / 3);
+  max-width: calc((100dvh - var(--topbar-h) - var(--nav-h) - var(--safe-b) - 40px) * 4 / 3);
 }
 .hero__video { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #000; }
 .hero__mute {
