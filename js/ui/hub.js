@@ -55,8 +55,9 @@
 
       LQ.render(
         '<div class="hero">' +
-          '<video class="hero__video" src="assets/videos/prologue.mp4" autoplay muted loop playsinline ' +
+          '<video class="hero__video" id="hero-video" src="assets/videos/prologue.mp4" autoplay muted loop playsinline ' +
             'aria-label="矗立著五扇高聳大門的心靈迷宮"></video>' +
+          '<button type="button" class="hero__mute" id="hero-mute" aria-label="開關影片聲音"><i>✕</i></button>' +
         "</div>" +
         '<div class="hero-title">' +
           '<div class="hero__mark">LIFE EDUCATION QUEST</div>' +
@@ -85,7 +86,56 @@
           LQ.levelflow.enterUnit(b.dataset.unit);
         });
       });
+
+      initHeroSound();
     }
   };
+
+  /* ---- 英雄影片的聲音開關 --------------------------------------------
+     預設靜音循環播放（純當背景）。打開聲音時：從頭播一次、背景音樂讓開；
+     播完（或使用者自己關掉聲音）就退回靜音循環，背景音樂等 5 秒再回來，
+     避免兩邊的聲音卡在一起切換。 */
+  function initHeroSound() {
+    var video = document.getElementById("hero-video");
+    var btn = document.getElementById("hero-mute");
+    if (!video || !btn) return;
+    var resumeTimer = null;
+
+    function setIcon() {
+      btn.innerHTML = video.muted ? "<i>✕</i>" : "<i>♪</i>";
+    }
+    setIcon();
+
+    function letMusicBack() {
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(function () { LQ.bgm.refresh(); }, 5000);
+    }
+
+    video.addEventListener("ended", function () {
+      video.muted = true;
+      video.loop = true;
+      video.currentTime = 0;
+      video.play().catch(function () {});
+      setIcon();
+      letMusicBack();
+    });
+
+    btn.addEventListener("click", function () {
+      LQ.audio.tap();
+      if (video.muted) {
+        clearTimeout(resumeTimer);
+        LQ.bgm.stop();
+        video.loop = false;
+        video.muted = false;
+        video.currentTime = 0;
+        video.play().catch(function () {});
+      } else {
+        video.muted = true;
+        video.loop = true;
+        letMusicBack();
+      }
+      setIcon();
+    });
+  }
 
 })(window.LQ = window.LQ || {});
