@@ -75,9 +75,9 @@
         '<div class="doors">' + LQ.data.units.map(doorHTML).join("") + "</div>" +
 
         /* 這一頁只留「門」。原本底下那串「其他去處」已經移到「每日」，
-           課本、心象、說明也各自有自己的導覽鈕，不必在這裡再列一次。 */
+           心象、說明也各自有自己的導覽鈕，不必在這裡再列一次。 */
         '<p class="hub__foot">其他玩法收在下面的「每日」，' +
-          "課本、心象探索、說明各有自己的按鈕。</p>"
+          "心象探索、說明各有自己的按鈕。</p>"
       );
 
       document.querySelectorAll("[data-unit]").forEach(function (b) {

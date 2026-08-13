@@ -171,6 +171,110 @@
 .choice__after b { color: var(--gold); display: block; margin-bottom: 4px; font-size: 12.5px; letter-spacing: .1em; }
 
 /* ==========================================================================
+   心象測驗（章前劇情跟鑄鑰之間的小互動・全螢幕）
+   ========================================================================== */
+
+.checkin {
+  position: fixed; inset: 0; z-index: 72;
+  display: flex; flex-direction: column;
+  background: var(--bg-0);
+  animation: fade var(--dur) var(--ease);
+}
+.checkin__top {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 8px;
+}
+.checkin__chapter { font-size: 11px; letter-spacing: .22em; color: var(--gold); }
+.checkin__skip {
+  padding: 6px 14px; border-radius: 999px; font-size: 12px;
+  border: 1px solid var(--line); background: rgba(7,11,20,.6); color: var(--ink-soft);
+}
+.checkin__dots { display: flex; gap: 5px; justify-content: center; padding: 2px 0 10px; }
+.checkin__dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.16); }
+.checkin__dots span.on { background: var(--gold); }
+
+/* body 只管捲動，inner 才管置中。置中如果做在會捲動的容器上，內容一長
+   出來上緣就會被裁掉、而且捲不回去（flex 置中的老坑）。inner 的
+   min-height:100% 讓內容不夠高時照樣置中，夠高時就自然往下長。 */
+.checkin__body {
+  flex: 1; min-height: 0; overflow-y: auto;
+  padding: 10px 20px calc(20px + var(--safe-b));
+}
+.checkin__inner {
+  min-height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: clamp(14px, 3.2vh, 26px);
+  max-width: var(--wrap); width: 100%; margin: 0 auto;
+}
+.checkin__prompt {
+  text-align: center; font-size: 17px; line-height: 1.7; color: var(--ink);
+  font-family: var(--font-title); max-width: 340px;
+}
+.checkin__note {
+  text-align: center; font-size: 12.5px; color: var(--gold);
+  min-height: 1.6em; opacity: 0; transform: translateY(4px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.checkin__note.show { opacity: 1; transform: translateY(0); }
+
+/* 羅盤：四個選項圍著中心排成上右下左。
+   寬度是拿捏過的：左右兩顆各佔 37%，圓心佔 24%（從 38% 到 62%），
+   所以選項最遠只到 37%，不會壓到圓心。改這三個數字時要一起算。 */
+.dial { position: relative; width: min(340px, 86vw); height: min(340px, 86vw); flex: none; }
+.dial__ring {
+  position: absolute; inset: 14%; border-radius: 50%;
+  border: 1px dashed var(--line-gold); opacity: .5;
+}
+.dial__hub {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  width: 24%; height: 24%; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, rgba(233,200,119,.30), rgba(233,200,119,.05));
+  border: 1px solid var(--line-gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: var(--gold);
+  transition: transform .5s var(--ease);
+}
+.dial__opt {
+  position: absolute; width: 37%;
+  padding: 8px 7px; border-radius: var(--r-sm); text-align: center;
+  border: 1px solid var(--line); background: rgba(11,18,32,.92);
+  font-size: 12px; line-height: 1.45; color: var(--ink-soft);
+  transition: all var(--dur) var(--ease);
+}
+.dial__opt[data-pos="0"] { top: 0; left: 50%; transform: translateX(-50%); }
+.dial__opt[data-pos="1"] { top: 50%; right: 0; transform: translateY(-50%); }
+.dial__opt[data-pos="2"] { bottom: 0; left: 50%; transform: translateX(-50%); }
+.dial__opt[data-pos="3"] { top: 50%; left: 0; transform: translateY(-50%); }
+.dial__opt.on { border-color: var(--gold); background: rgba(233,200,119,.14); color: var(--ink); box-shadow: 0 0 0 1px var(--gold-glow); }
+
+/* 量表：直向拖曳的量規 */
+.gauge { display: flex; flex-direction: column; align-items: center; gap: 10px; flex: none; }
+.gauge__frame {
+  position: relative; width: 54px; height: 240px; border-radius: 999px;
+  background: linear-gradient(180deg, var(--gold-deep), rgba(255,255,255,.06));
+  border: 1px solid var(--line-gold); touch-action: none; cursor: grab;
+}
+.gauge__fill {
+  position: absolute; left: 3px; right: 3px; bottom: 3px; border-radius: 999px;
+  background: linear-gradient(180deg, var(--gold), rgba(233,200,119,.35));
+  transition: height .12s linear;
+}
+.gauge__handle {
+  position: absolute; left: 50%; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--ink); border: 3px solid var(--gold); box-shadow: var(--shadow-sm);
+  transform: translate(-50%, 50%); transition: bottom .12s linear;
+}
+.gauge__side { display: flex; flex-direction: column; justify-content: space-between; height: 240px; padding: 4px 0; }
+.gauge__wrap { display: flex; align-items: center; gap: 14px; }
+.gauge__label { font-size: 11.5px; color: var(--ink-faint); max-width: 78px; line-height: 1.5; }
+.gauge__label--max { color: var(--gold); }
+.gauge__value { font-size: 26px; color: var(--gold); font-family: var(--font-title); }
+
+.checkin__go {
+  width: 100%; max-width: 260px;
+}
+
+/* ==========================================================================
    鑄鑰（核心玩法・全螢幕）
    ========================================================================== */
 
@@ -437,94 +541,6 @@
 .entry__h small { font-size: 11px; color: var(--ink-faint); margin-left: auto; }
 .entry__q { font-size: 12.5px; color: var(--gold); margin: 0 0 5px; }
 .entry__a { font-size: 14px; color: var(--ink-soft); margin: 0; white-space: pre-wrap; line-height: 1.85; }
-
-/* ==========================================================================
-   課本單元
-   ========================================================================== */
-
-.lessons { display: flex; flex-direction: column; gap: 10px; }
-
-.lcell {
-  text-align: left; width: 100%;
-  padding: 15px 16px; border-radius: var(--r-md);
-  border: 1px solid var(--line); background: var(--glass);
-  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-.lcell:hover { border-color: var(--line-gold); transform: translateY(-1px); }
-.lcell--done { border-color: rgba(111, 214, 176, .4); }
-
-.lcell__top { display: flex; align-items: flex-start; gap: 11px; }
-.lcell__g {
-  width: 40px; height: 40px; flex: none; border-radius: var(--r-sm);
-  display: flex; align-items: center; justify-content: center; font-size: 20px;
-  background: rgba(233, 200, 119, .10); border: 1px solid var(--line-gold);
-}
-.lcell__head { flex: 1; min-width: 0; }
-.lcell__no { font-size: 11.5px; letter-spacing: .1em; color: var(--gold); }
-.lcell__name { font-size: 16px; font-weight: 700; color: var(--ink); margin-top: 2px; line-height: 1.45; }
-.lcell__mark { flex: none; font-size: 19px; color: var(--gold); padding: 2px 4px; line-height: 1; }
-.lcell__desc { font-size: 12.5px; color: var(--ink-soft); margin: 10px 0 0; line-height: 1.75; }
-.lcell__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-.lcell__bar { display: flex; align-items: center; gap: 9px; margin-top: 11px; }
-.lcell__bar .bar { flex: 1; }
-.lcell__bar b { font-size: 12px; color: var(--ink-soft); flex: none; min-width: 34px; text-align: right; }
-
-/* --- 段落 ------------------------------------------------------------ */
-
-.lsecs { display: flex; flex-direction: column; gap: 9px; }
-.lsec { border-radius: var(--r-md); border: 1px solid var(--line); background: var(--glass); overflow: hidden; }
-.lsec--open { border-color: var(--line-gold); }
-
-.lsec__head { display: flex; align-items: center; gap: 11px; width: 100%; text-align: left; padding: 13px 15px; }
-.lsec__n {
-  width: 26px; height: 26px; flex: none; border-radius: 999px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12.5px; font-weight: 700;
-  color: var(--ink-soft); border: 1px solid var(--line);
-}
-.lsec__n--done { color: var(--bg-0); background: var(--jade); border-color: var(--jade); }
-.lsec__t { flex: 1; min-width: 0; }
-.lsec__t b { font-size: 14.5px; display: block; line-height: 1.5; }
-.lsec__t small { font-size: 11.5px; color: var(--ink-faint); }
-.lsec__chev { flex: none; color: var(--gold); font-size: 13px; }
-
-.lsec__body { padding: 2px 15px 15px; animation: rise var(--dur) var(--ease); }
-.lsec__slide { font-size: 15px; color: var(--ink); line-height: 2; margin: 0 0 12px; }
-
-/* 備課提示：投影中不能讓學生看到，所以預設收起來 */
-.lsec__notes { margin: 14px 0; }
-.lsec__notes-t {
-  font-size: 12px; color: var(--ice); padding: 7px 11px; border-radius: var(--r-sm);
-  border: 1px dashed var(--line); background: rgba(143, 212, 245, .06); width: 100%; text-align: left;
-}
-.lsec__notes-b { margin-top: 9px; padding: 12px 14px; border-radius: var(--r-sm);
-  border: 1px solid var(--line); background: rgba(7, 11, 20, .5); }
-.lsec__notes-b ul { margin: 0; padding-left: 18px; }
-.lsec__notes-b li { font-size: 13px; color: var(--ink-soft); line-height: 1.85; margin-bottom: 7px; }
-.lsec__notes-b li:last-child { margin-bottom: 0; }
-
-/* --- 段落裡的互動題 --------------------------------------------------- */
-
-.lcp {
-  margin-top: 14px; padding: 15px 16px; border-radius: var(--r-sm);
-  border: 1px solid var(--line-gold); background: rgba(233, 200, 119, .07);
-}
-.lcp__eyebrow { font-size: 11.5px; letter-spacing: .1em; color: var(--gold); margin-bottom: 7px; }
-.lcp__q { font-size: 15px; color: var(--ink); line-height: 1.85; margin: 0 0 13px; }
-.lcp__hint { font-size: 12px; color: var(--ink-faint); margin: 10px 0 0; line-height: 1.7; }
-
-.lscale-row { display: flex; gap: 8px; }
-.lscale {
-  flex: 1; padding: 13px 0; border-radius: var(--r-sm);
-  border: 1px solid var(--line); background: rgba(255, 255, 255, .05);
-  font-size: 16px; font-weight: 700; color: var(--ink-soft);
-  transition: all var(--dur) var(--ease);
-}
-.lscale:hover { border-color: var(--line-gold); }
-.lscale--on { color: var(--bg-0); background: var(--gold); border-color: var(--gold); }
-.lscale-lab { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ink-faint); margin-top: 7px; }
-
-.choice--on { border-color: var(--gold); background: rgba(233, 200, 119, .14); }
 
 /* ==========================================================================
    心象探索（塔羅・測驗・星座・價值羅盤）

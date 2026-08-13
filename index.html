@@ -13,8 +13,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap">
 <link rel="stylesheet" href="css/tokens.css?v=23">
-<link rel="stylesheet" href="css/components.css?v=23">
-<link rel="stylesheet" href="css/style.css?v=29">
+<link rel="stylesheet" href="css/components.css?v=24">
+<link rel="stylesheet" href="css/style.css?v=30">
 </head>
 <body>
 
@@ -63,7 +63,6 @@
 <nav id="nav" class="nav" hidden>
   <button type="button" data-go="hub" class="nav__main"><i>⌘</i><span>五扇門故事</span></button>
   <button type="button" data-go="daily"><i>◷</i><span>每日</span></button>
-  <button type="button" data-go="lessons"><i>▤</i><span>課本</span></button>
   <button type="button" data-go="tarot"><i>✦</i><span>塔羅</span></button>
   <button type="button" data-go="zodiac"><i>☉</i><span>星座</span></button>
   <button type="button" data-go="psych"><i>◈</i><span class="nav__long">心理測驗</span><span class="nav__short">測驗</span></button>
@@ -79,6 +78,9 @@
 <!-- 全螢幕：劇情播放 -->
 <div id="story" class="story" hidden></div>
 
+<!-- 全螢幕：心象測驗（章前劇情跟鑄鑰之間的小互動） -->
+<div id="checkin" class="checkin" hidden></div>
+
 <!-- 全螢幕：鑄鑰玩法 -->
 <div id="forge" class="forge" hidden></div>
 
@@ -92,13 +94,12 @@
 <script src="js/data/titles.js?v=23"></script>
 <script src="js/data/shop-items.js?v=23"></script>
 <script src="js/data/daily-sets.js?v=23"></script>
-<script src="js/data/units.js?v=32"></script>
+<script src="js/data/units.js?v=33"></script>
 <script src="js/data/tarot.js?v=23"></script>
 <script src="js/data/tarot-minor.js?v=25"></script>
 <script src="js/data/psychtests.js?v=23"></script>
 <script src="js/data/zodiac.js?v=23"></script>
 <script src="js/data/values.js?v=23"></script>
-<script src="js/data/lessons.js?v=24"></script>
 <script src="js/state.js?v=23"></script>
 <script src="js/cloud.js?v=23"></script>
 <script src="js/audio.js?v=23"></script>
@@ -110,15 +111,15 @@
 <script src="js/game/illusions.js?v=23"></script>
 <script src="js/game/titles.js?v=23"></script>
 <script src="js/game/oracle.js?v=23"></script>
-<script src="js/game/lessons.js?v=23"></script>
 <script src="js/ui/modal.js?v=23"></script>
 <script src="js/ui/help.js?v=24"></script>
 <script src="js/ui/login.js?v=30"></script>
 <script src="js/ui/story.js?v=23"></script>
+<script src="js/ui/checkin.js?v=2"></script>
 <script src="js/ui/forge.js?v=23"></script>
-<script src="js/game/levelflow.js?v=23"></script>
+<script src="js/game/levelflow.js?v=24"></script>
 <script src="js/game/hunt.js?v=23"></script>
-<script src="js/ui/hub.js?v=30"></script>
+<script src="js/ui/hub.js?v=31"></script>
 <script src="js/ui/daily.js?v=23"></script>
 <script src="js/ui/codex.js?v=23"></script>
 <script src="js/ui/character.js?v=23"></script>
@@ -130,9 +131,8 @@
 <script src="js/ui/psych.js?v=23"></script>
 <script src="js/ui/zodiac.js?v=23"></script>
 <script src="js/ui/values.js?v=23"></script>
-<script src="js/ui/lessons.js?v=23"></script>
 <script src="js/ui/settings.js?v=30"></script>
-<script src="js/main.js?v=30"></script>
+<script src="js/main.js?v=31"></script>
 <script src="js/pwa.js?v=23"></script>
 </body>
 </html>

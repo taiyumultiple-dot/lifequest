@@ -15,8 +15,6 @@
     shop:      function () { LQ.ui.shop.render(); },
     journal:   function () { LQ.ui.journal.render(); },
     settings:  function () { LQ.ui.settings.render(); },
-    // 課本單元
-    lessons:   function () { LQ.ui.lessons.render(); },
     // 心象探索
     oracle:    function () { LQ.ui.oracle.render(); },
     tarot:     function () { LQ.ui.tarot.render(); },
@@ -25,13 +23,14 @@
     values:    function () { LQ.ui.values.render(); }
   };
 
-  /* 底部導覽十顆：五扇門／每日／課本／塔羅／星座／心理測驗／價值羅盤／
-     人物／說明／設定。原本「心象」那一顆拆成四顆，四樣工具各自有入口。
+  /* 底部導覽九顆：五扇門／每日／塔羅／星座／心理測驗／價值羅盤／
+     人物／說明／設定。原本「心象」那一顆拆成四顆，四樣工具各自有入口；
+     「課本」已經拿掉——裡面的 checkpoint 題目改搬進 checkin.js，
+     夾在每一關的章前劇情跟鑄鑰之間。
      沒有自己那一顆的畫面，歸在最接近的那一顆底下反白
      （心象探索的總覽頁歸在塔羅底下，補給站與迷障圖鑑歸在每日底下）。 */
   var NAV_OF = { hub: "hub", journal: "hub",
                  daily: "daily", shop: "daily", codex: "daily",
-                 lessons: "lessons",
                  tarot: "tarot", oracle: "tarot",
                  zodiac: "zodiac", psych: "psych", values: "values",
                  character: "character", settings: "settings" };
@@ -106,7 +105,6 @@
 
     LQ.state.load();
     applyContentPack();
-    LQ.lessons.applyPack();     // 使用者匯入過課本單元的話，用他的取代內建六單元
     LQ.daily.sync();
 
     LQ.ui.modal.init();

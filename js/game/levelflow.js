@@ -1,6 +1,6 @@
 /* ==========================================================================
    關卡流程
-   章前劇情 → 迷障降臨 → 鑄鑰 → 開門與真相 → 領悟與反思
+   章前劇情 → 心象測驗 → 迷障降臨 → 鑄鑰 → 開門與真相 → 領悟與反思
    ========================================================================== */
 (function (LQ) {
   "use strict";
@@ -62,10 +62,10 @@
       LQ.ui.story.play({
         chapter: u.no + "｜" + u.name,
         beats: u.intro,
-        onDone: function () { toForge(u); }
+        onDone: function () { LQ.ui.checkin.play(u, function () { toForge(u); }); }
       });
     } else {
-      toForge(u);
+      LQ.ui.checkin.play(u, function () { toForge(u); });
     }
   }
 
